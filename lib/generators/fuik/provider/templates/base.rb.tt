@@ -1,0 +1,8 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    # def self.verify!(request)
+      # TODO: Implement signature verification
+      # raise Fuik::InvalidSignature # only raise when signature is invalid
+    # end
+  end
+end

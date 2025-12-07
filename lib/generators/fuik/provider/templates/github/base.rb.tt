@@ -1,0 +1,11 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    def self.verify!(request)
+      secret = Rails.application.credentials.dig(:webhooks, :github, :secret)
+      signature = request.headers["X-Hub-Signature-256"]
+      expected_signature = "sha256=" + OpenSSL::HMAC.hexdigest("SHA256", secret, request.raw_post)
+
+      raise Fuik::InvalidSignature unless Rack::Utils.secure_compare(signature, expected_signature)
+    end
+  end
+end

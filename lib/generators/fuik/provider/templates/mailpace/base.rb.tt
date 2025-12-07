@@ -1,0 +1,19 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    def self.verify!(request)
+      public_key_base64 = Rails.application.credentials.dig(:webhooks, :mailpace, :public_key)
+      signature_base64 = request.headers["X-MailPace-Signature"]
+
+      verify_key = Ed25519::VerifyKey.new(Base64.strict_decode64(public_key_base64))
+      signature = Base64.strict_decode64(signature_base64)
+
+      raise Fuik::InvalidSignature unless verify_key.verify(signature, request.raw_post)
+    rescue Ed25519::VerifyError
+      raise Fuik::InvalidSignature
+    end
+
+    private
+
+    def email = payload["to"]
+  end
+end

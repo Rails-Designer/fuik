@@ -1,0 +1,12 @@
+module <%= provider_module_name %>
+  class StarCreated < Base
+    def process!
+      repository = payload.dig("repository", "full_name")
+      stargazer = payload.dig("sender", "login")
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

@@ -1,0 +1,14 @@
+module <%= provider_module_name %>
+  class Push < Base
+    def process!
+      # This fires when a pull request is merged (default branch push)
+
+      repository = payload.dig("repository", "full_name")
+      ref = payload["ref"]
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

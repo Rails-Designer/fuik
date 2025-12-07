@@ -1,0 +1,16 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    def self.verify!(request)
+      secret = Rails.application.credentials.dig(:webhooks, :stripe, :secret)
+      signature = request.headers["Stripe-Signature"]
+
+      Stripe::Webhook.construct_event(
+        request.raw_post,
+        signature,
+        secret
+      )
+    rescue JSON::ParserError, Stripe::SignatureVerificationError => error
+      raise Fuik::InvalidSignature, error.message
+    end
+  end
+end

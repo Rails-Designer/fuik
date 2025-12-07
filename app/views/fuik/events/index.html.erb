@@ -1,0 +1,15 @@
+<h1>Webhooks</h1>
+
+<% @webhook_events.each do |event| %>
+  <article>
+    <%= link_to event_path(event) do %>
+      <span><%= event.provider %></span>
+
+      <code><%= event.event_type %></code>
+
+      <span class="status" data-status="<%= event.status %>"><%= event.status %></span>
+
+      <time><%= event.created_at.strftime("%Y-%m-%d %H:%M:%S") %></time>
+    <% end %>
+  </article>
+<% end %>

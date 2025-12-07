@@ -1,0 +1,23 @@
+===============================================================================
+
+Webhook endpoint:
+  POST /webhooks/<%= file_name %>
+
+Next steps:
+
+  1. Configure webhook in <%= provider_module_name %>:
+     Set webhook URL to: https://yourdomain.com/webhooks/<%= file_name %>
+
+  2. Implement (optional) signature verification in app/webhooks/<%= file_name %>/base.rb:
+
+  3. Implement event processing logic in:
+<% event_names.each do |event_name| %>
+     - app/webhooks/<%= file_name %>/<%= event_name.underscore %>.rb
+<% end %>
+
+View received webhooks at: /webhooks
+
+
+(🙏 share your created provider with others, by submitting a PR)
+
+===============================================================================

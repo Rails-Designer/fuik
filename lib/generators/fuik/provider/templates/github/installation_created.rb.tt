@@ -1,0 +1,12 @@
+module <%= provider_module_name %>
+  class InstallationCreated < Base
+    def process!
+      installation_id = payload.dig("installation", "id")
+      account = payload.dig("installation", "account", "login")
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

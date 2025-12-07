@@ -1,0 +1,11 @@
+module <%= provider_module_name %>
+  class <%= event_class_name %> < Base
+    def process!
+      subscription_id = payload.dig("data", "object", "id")
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

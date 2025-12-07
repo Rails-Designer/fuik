@@ -1,0 +1,31 @@
+<h1>
+  <%= link_to "Webhooks", root_path %> / <%= @webhook_event.event_id %>
+</h1>
+
+<dl>
+  <dt>Provider</dt>
+  <dd><%= @webhook_event.provider %></dd>
+
+  <dt>Event ID</dt>
+  <dd><%= @webhook_event.event_id %></dd>
+
+  <dt>Type</dt>
+  <dd><%= @webhook_event.event_type %></dd>
+
+  <dt>Status</dt>
+  <dd class="status" data-status="<%= @webhook_event.status %>"><%= @webhook_event.status %></dd>
+
+  <dt>Created</dt>
+  <dd><%= @webhook_event.created_at.strftime("%Y-%m-%d %H:%M:%S") %></dd>
+
+  <dt>Payload</dt>
+  <dd><pre><%= JSON.pretty_generate(@webhook_event.payload) %></pre></dd>
+
+  <dt>Headers</dt>
+  <dd><pre><%= JSON.pretty_generate(@webhook_event.headers) %></pre></dd>
+
+  <% if @webhook_event.error.present? %>
+    <dt>Error</dt>
+    <dd><%= @webhook_event.error %></dd>
+  <% end %>
+</dl>

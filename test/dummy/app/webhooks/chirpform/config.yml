@@ -1,0 +1,7 @@
+event_type:
+  source: header
+  key: X-Chirpform-Event
+
+event_id:
+  source: header
+  key: X-Chirpform-Id

@@ -1,0 +1,9 @@
+module <%= provider_module_name %>
+  class EmailSpam < Base
+    def process!
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end
