@@ -1,7 +1,7 @@
 module <%= provider_module_name %>
   class Base < Fuik::Event
     def self.verify!(request)
-      secret = Rails.application.credentials.dig(:webhooks, :stripe, :secret)
+      secret = Rails.application.credentials.dig(:stripe, :signing_secret)
       signature = request.headers["Stripe-Signature"]
 
       Stripe::Webhook.construct_event(
