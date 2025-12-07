@@ -1,7 +1,7 @@
 module <%= provider_module_name %>
   class Base < Fuik::Event
     def self.verify!(request)
-      public_key_base64 = Rails.application.credentials.dig(:webhooks, :mailpace, :public_key)
+      public_key_base64 = Rails.application.credentials.dig(:mailpace, :public_key)
       signature_base64 = request.headers["X-MailPace-Signature"]
 
       verify_key = Ed25519::VerifyKey.new(Base64.strict_decode64(public_key_base64))

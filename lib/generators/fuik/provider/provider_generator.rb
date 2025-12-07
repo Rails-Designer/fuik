@@ -9,7 +9,11 @@ module Fuik
       argument :event_names, type: :array, default: []
 
       def create_base_class
-        template "base.rb.tt", "app/webhooks/#{file_name}/base.rb"
+        if packaged_base_exists?
+          template packaged_base_template_path, "app/webhooks/#{file_name}/base.rb"
+        else
+          template "base.rb.tt", "app/webhooks/#{file_name}/base.rb"
+        end
       end
 
       def create_event_classes
@@ -26,6 +30,14 @@ module Fuik
 
       private
 
+      def packaged_base_exists?
+        File.exist?(packaged_base_template_path)
+      end
+
+      def packaged_base_template_path
+        File.join(self.class.source_root, file_name, "base.rb.tt")
+      end
+
       def packaged_event_exists? = File.exist?(packaged_event_template_path)
 
       def copy_packaged_event
@@ -38,7 +50,7 @@ module Fuik
 
       def packaged_event_template_path = File.join(self.class.source_root, "providers", file_name, "#{event_file_name}.rb.tt")
 
-      def event_file_path = Rails.join("app", "webhooks", file_name, "#{event_file_name}.rb")
+      def event_file_path = Rails.root.join("app", "webhooks", file_name, "#{event_file_name}.rb")
 
       def event_file_name = @event_name.underscore
 
