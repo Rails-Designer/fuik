@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Rails Designer"]
   spec.email = ["devs@railsdesigner.com"]
 
-  spec.summary = "TBD"
-  spec.description = "TBD"
+  spec.summary = "A fish trap for webhooks"
+  spec.description = "Fuik (Dutch for fish trap) is a Rails engine that catches and stores webhooks from any provider. View all events in the admin interface, then create event classes to add your business logic."
   spec.homepage = "https://railsdesigner.com/fuik/"
   spec.license = "MIT"
 
