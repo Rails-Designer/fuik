@@ -12,10 +12,6 @@ module Fuik
       def add_route
         route 'mount Fuik::Engine => "/webhooks"'
       end
-
-      def show_readme
-        readme "README" if behavior == :invoke
-      end
     end
   end
 end
