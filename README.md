@@ -112,7 +112,7 @@ If `Provider::Base.verify!` exists, Fuik calls it automatically. Invalid signatu
 
 ### Pre-packaged providers
 
-Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Desinger/fuik/tree/main/lib/generators/fuik/provider/templates).
+Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates).
 
 
 ### Event type & ID lookup
@@ -148,7 +148,7 @@ event_id:
 
 ## Add your custom provider
 
-Have a provider template others could use? Add it to [lib/generators/fuik/provider/templates/your_provider/](https://github.com/Rails-Desinger/fuik/tree/main/lib/generators/fuik/provider/templates) and submit a PR!
+Have a provider template others could use? Add it to [lib/generators/fuik/provider/templates/your_provider/](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates) and submit a PR!
 
 Include:
 - `base.rb.tt` with signature verification (if applicable);
