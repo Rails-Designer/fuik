@@ -8,16 +8,18 @@
     --color-bg-hover: oklch(97% 0.01 250);
   }
 
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    margin: 0;
-    padding: 2rem;
-    max-inline-size: 80rem;
-    margin-inline: auto;
     font-family: system-ui, -apple-system, sans-serif;
     line-height: 1.5;
     color: var(--color-text);
+  }
+
+  main {
+    padding: 2rem;
+    max-inline-size: 80rem;
+    margin-inline: auto;
   }
 
   h1 {
@@ -49,19 +51,49 @@
     background: var(--color-bg-hover);
     border-radius: .5rem;
     overflow-x: auto;
+    }
   }
 
   dl {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 1rem 2rem;
+    overflow: hidden;
 
     dt {
       font-weight: 600;
       color: var(--color-text);
     }
 
-    dd { margin: 0; }
+    dd {
+      position: relative;
+      overflow-x: auto;
+    }
+  }
+
+  .copy-button {
+    padding: .125rem;
+    color: oklch(from var(--color-text) l c h / 80%);
+    background: var(--color-bg);
+    border: 0;
+    border-radius: .25rem;
+    cursor: pointer;
+
+    &:hover {
+      color: oklch(from var(--color-text) l c h);
+      transition: transform ease-in-out 300ms;
+      transform: scale(1.10);
+    }
+
+    &[position="fixed"] {
+      position: absolute;
+      top: .5rem; right: .5rem;
+    }
+
+    svg {
+      width: 1rem;
+      aspect-ratio: 1 / 1;
+    }
   }
 }
 

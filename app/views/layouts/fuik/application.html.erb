@@ -8,10 +8,11 @@
   <%= yield :head %>
 
   <%= stylesheet_link_tag "fuik/application", media: "all" %>
+  <script defer src="https://cdn.jsdelivr.net/npm/attractivejs@0.11.0"></script>
 </head>
 <body>
-
-<%= yield %>
-
+  <main>
+    <%= yield %>
+  </main>
 </body>
 </html>

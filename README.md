@@ -4,6 +4,8 @@
 
 Fuik (Dutch for fish trap) is a Rails engine that catches and stores webhooks from any provider. View all events in the admin interface, then create event classes to add your business logic.
 
+<img alt="Fuik admin interface" src="https://raw.githubusercontent.com/Rails-Designer/fuik/HEAD/.github/docs/webhooks-index.jpg" style="max-width: 100%;">
+
 
 **Sponsored By [Rails Designer](https://railsdesigner.com/)**
 
@@ -54,7 +56,7 @@ The engine mounts at `/webhooks` automatically.
 
 Visit `/webhooks` to see all received webhooks. Click any event to see the full payload, headers and status.
 
-<img alt="Fuik admin interface" src="https://raw.githubusercontent.com/Rails-Designer/fuik/HEAD/.github/docs/webhooks-index.jpg" style="max-width: 100%;">
+<img alt="Fuik event detail interface" src="https://raw.githubusercontent.com/Rails-Designer/fuik/HEAD/.github/docs/event-detail.jpg" style="max-width: 100%;">
 
 ⚠️ The `/webhooks` path is by default not protected. Easiest is to set `Fuik::Engine.config.events_controller_parent` to a controller that requires authentication.
 
