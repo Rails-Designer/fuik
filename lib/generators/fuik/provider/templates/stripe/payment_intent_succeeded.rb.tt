@@ -1,5 +1,5 @@
 module Stripe
-  class CustomerSubscriptionUpdated < Base
+  class PaymentIntentSucceeded < Base
     def process!
       # TODO: Add business logic
 
@@ -8,6 +8,6 @@ module Stripe
 
     private
 
-    def subscription_id = payload.dig("data", "object", "id")
+    def payment_intent_id = payload["data"]["object"]["id"]
   end
 end

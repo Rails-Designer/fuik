@@ -1,5 +1,5 @@
-module <%= provider_module_name %>
-  class <%= event_class_name %> < Base
+module Stripe
+  class CustomerSubscriptionDeleted < Base
     def process!
       subscription_id = payload.dig("data", "object", "id")
 

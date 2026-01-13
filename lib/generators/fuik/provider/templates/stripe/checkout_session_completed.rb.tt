@@ -1,12 +1,14 @@
-module <%= provider_module_name %>
-  class <%= event_class_name %> < Base
+module Stripe
+  class CheckoutSessionCompleted < Base
     def process!
-      session_id = payload.dig("data", "object", "id")
-
       # TODO: Add business logic
       # session = Stripe::Checkout::Session.retrieve(session_id) # this assumes the Stripe gem is available
 
       @webhook_event.processed!
     end
+
+    private
+
+    def session_id = payload.dig("data", "object", "id")
   end
 end
