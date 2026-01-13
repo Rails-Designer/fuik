@@ -56,7 +56,7 @@ Visit `/webhooks` to see all received webhooks. Click any event to see the full 
 
 <img alt="Fuik admin interface" src="https://raw.githubusercontent.com/Rails-Designer/fuik/HEAD/.github/docs/webhooks-index.jpg" style="max-width: 100%;">
 
-⚠️ The `/webhooks` path is by default not protected. Easiest is to set `Fuik::Engine.config.webhooks_controller_parent` to a controller that requires authentication.
+⚠️ The `/webhooks` path is by default not protected. Easiest is to set `Fuik::Engine.config.events_controller_parent` to a controller that requires authentication.
 
 
 ### Add business logic
