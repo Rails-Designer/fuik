@@ -59,7 +59,7 @@ module Fuik
     end
 
     def event_class_for(provider, event_type)
-      "#{provider.camelize}::#{event_type.tr("./:-", "_").camelize}".safe_constantize
+      "#{provider.camelize}::#{event_type.tr("./:-[]", "_").camelize}".safe_constantize
     end
 
     def should_verify? = base_class&.respond_to?(:verify!)
