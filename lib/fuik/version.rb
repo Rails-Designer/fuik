@@ -1,3 +1,3 @@
 module Fuik
-  VERSION = "0.7.0"
+  VERSION = "minor"
 end
