@@ -10,11 +10,15 @@ if [ -z "$VERSION" ]; then
 fi
 
 printf "module Fuik\n  VERSION = \"$VERSION\"\nend\n" > ./lib/fuik/version.rb
+
 bundle
+
 git add Gemfile.lock lib/fuik/version.rb
 git commit -m "Bump version for $VERSION"
-git push
+# git push
+
 git tag v$VERSION
-git push --tags
+# git push --tags
+
 gem build fuik.gemspec
-gem push "fuik-$VERSION.gem"
+# gem push "fuik-$VERSION.gem"
