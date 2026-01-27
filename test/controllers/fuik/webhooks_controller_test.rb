@@ -154,5 +154,13 @@ module Fuik
 
       assert_response :ok
     end
+
+    test "returns 500 status on unexpected errors" do
+      post "/webhooks/stripe",
+        params: "invalid json{{{",
+        headers: { "Content-Type" => "application/json", "Stripe-Signature" => "valid_signature" }
+
+      assert_response :internal_server_error
+    end
   end
 end

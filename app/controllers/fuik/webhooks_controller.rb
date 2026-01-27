@@ -24,6 +24,8 @@ module Fuik
       head :unauthorized
     rescue ActiveRecord::RecordNotUnique
       head :ok
+    rescue
+      head :internal_server_error
     end
 
     private
