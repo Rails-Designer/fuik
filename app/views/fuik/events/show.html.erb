@@ -7,7 +7,7 @@
   <dd><%= @webhook_event.provider %></dd>
 
   <dt>Event ID</dt>
-  <dd><%= tag.code @webhook_event.event_id, id: "event_id" %> <%= render "copy_button", target: "#event_id" %></dd>
+  <dd><%= tag.code @webhook_event.event_id, id: "event_id" %> <%= render "copy_button", target: "event_id" %></dd>
 
   <dt>Type</dt>
   <dd><%= @webhook_event.event_type %></dd>
@@ -19,10 +19,10 @@
   <dd><%= @webhook_event.created_at.strftime("%Y-%m-%d %H:%M:%S") %></dd>
 
   <dt>Payload</dt>
-  <dd><pre id="payload"><%= JSON.pretty_generate(@webhook_event.payload) %></pre> <div class="actions"><%= button_to downloads_path, params: { event_id: @webhook_event.id }, method: :post, class: "" do %><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34Zm-56,83.32-24,24a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L120,164.69V120a8,8,0,0,1,16,0v44.69l10.34-10.35a8,8,0,0,1,11.32,11.32ZM152,88V44l44,44Z"/></svg><% end %> <%= render "copy_button", target: "#payload" %></div></dd>
+  <dd><pre id="payload"><%= JSON.pretty_generate(@webhook_event.payload) %></pre> <div class="actions"><%= button_to downloads_path, params: { event_id: @webhook_event.id }, method: :post, class: "" do %><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34Zm-56,83.32-24,24a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L120,164.69V120a8,8,0,0,1,16,0v44.69l10.34-10.35a8,8,0,0,1,11.32,11.32ZM152,88V44l44,44Z"/></svg><% end %> <%= render "copy_button", target: "payload" %></div></dd>
 
   <dt>Headers</dt>
-  <dd><pre id="headers"><%= JSON.pretty_generate(@webhook_event.headers) %></pre> <div class="actions"><%= render "copy_button", target: "#headers" %></div></dd>
+  <dd><pre id="headers"><%= JSON.pretty_generate(@webhook_event.headers) %></pre> <div class="actions"><%= render "copy_button", target: "headers" %></div></dd>
 
   <% if @webhook_event.error.present? %>
     <dt>Error</dt>

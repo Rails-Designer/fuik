@@ -6,5 +6,11 @@ module Fuik
 
     config.webhooks_controller_parent = "ActionController::Base"
     config.events_controller_parent = "ActionController::Base"
+
+    config.to_prepare do
+      ActiveSupport.on_load(:action_view) do
+        include Fuik::IconHelper
+      end
+    end
   end
 end
