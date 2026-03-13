@@ -177,4 +177,13 @@
       transform: scale(1.10);
     }
   }
+
+  .json-highlight {
+    .json-key { color: oklch(35% .15 250); }
+    .json-string { color: oklch(30% .18 160); }
+    .json-number { color: oklch(40% .15 130); }
+    .json-boolean { color: oklch(45% .18 260); }
+    .json-null { color: oklch(50% .05 250); }
+    .json-punctuation { color: oklch(20% .03 250); }
+  }
 }

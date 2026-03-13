@@ -10,6 +10,7 @@ module Fuik
     config.to_prepare do
       ActiveSupport.on_load(:action_view) do
         include Fuik::IconHelper
+        include Fuik::HighlightHelper
       end
     end
   end
