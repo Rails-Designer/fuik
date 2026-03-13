@@ -68,6 +68,21 @@
       position: relative;
       overflow-x: auto;
     }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      position: absolute;
+      top: .5rem; right: .5rem;
+    }
+
+    svg {
+      width: 1rem;
+      aspect-ratio: 1 / 1;
+      color: oklch(from var(--color-text) l c h / 80%);
+      background: var(--color-bg);
+    }
   }
 }
 
@@ -104,9 +119,9 @@
     &[data-status="failed"]::before { color: oklch(60% 0.2 25); }
   }
 
+  button,
   .copy-button {
     padding: .125rem;
-    color: oklch(from var(--color-text) l c h / 80%);
     background: var(--color-bg);
     border: 0;
     border-radius: .25rem;
@@ -116,16 +131,6 @@
       color: oklch(from var(--color-text) l c h);
       transition: transform ease-in-out 300ms;
       transform: scale(1.10);
-    }
-
-    &[position="fixed"] {
-      position: absolute;
-      top: .5rem; right: .5rem;
-    }
-
-    svg {
-      width: 1rem;
-      aspect-ratio: 1 / 1;
     }
   }
 }
