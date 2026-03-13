@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+
+dummy_app_path = File.expand_path("../test/dummy", __dir__)
+
+puts "Seeding webhook events…"
+Dir.chdir(dummy_app_path) do
+  system("bin/rails db:seed") || exit(1)
+end

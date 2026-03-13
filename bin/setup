@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+
+dummy_app_path = File.expand_path("../test/dummy", __dir__)
+
+puts "Setting up test/dummy Rails app…"
+Dir.chdir(dummy_app_path) do
+  system("bundle install") || exit(1)
+  system("bin/rails db:create db:migrate") || exit(1)
+
+  unless ARGV.include?("--no-seed")
+    puts "Seeding data…"
+    system("bin/rails db:seed") || exit(1)
+  end
+end
+
+puts "Setup complete"
