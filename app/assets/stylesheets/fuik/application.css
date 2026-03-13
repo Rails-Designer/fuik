@@ -147,13 +147,20 @@
     align-items: center;
     column-gap: .375rem;
 
-    &::before { content: "●"; }
+    &::before {
+      content: "";
+      width: .5rem;
+      aspect-ratio: 1/1;
+      background-color: currentColor;
+      border: 2px solid oklch(from currentColor 1 c h / 85%);
+      border-radius: .5rem;
+    }
 
-    &[data-status="pending"]::before { color: oklch(65% 0.15 75); }
+    &[data-status="pending"]::before { color: oklch(65% .15 80); }
 
-    &[data-status="processed"]::before { color: oklch(65% 0.15 150); }
+    &[data-status="processed"]::before { color: oklch(65% .15 150); }
 
-    &[data-status="failed"]::before { color: oklch(60% 0.2 25); }
+    &[data-status="failed"]::before { color: oklch(60% .2 25); }
   }
 
   button,
