@@ -88,10 +88,6 @@
       display: none;
     }
 
-    dd .copy-button .copy-icon {
-      display: block;
-    }
-
     dd:has([data-copy-success="true"]) .copy-button .copy-icon {
       display: none;
     }
