@@ -10,6 +10,11 @@ module Fuik
 
     def show
       @webhook_event = WebhookEvent.find(params[:id])
+
+      respond_to do |format|
+        format.html
+        format.json { render json: @webhook_event }
+      end
     end
   end
 end
