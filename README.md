@@ -54,7 +54,7 @@ The engine mounts at `/webhooks` automatically.
 
 ### View events
 
-Visit `/webhooks` to see all received webhooks. Click any event to see the full payload, headers and status.
+Visit `/webhooks` to see all received webhooks. Click any event to view all the payload details and copy the payload or download as JSON.
 
 <img alt="Fuik event detail interface" src="https://raw.githubusercontent.com/Rails-Designer/fuik/HEAD/.github/docs/event-detail.jpg" style="max-width: 100%;">
 
@@ -63,15 +63,14 @@ Visit `/webhooks` to see all received webhooks. Click any event to see the full 
 
 ### Add business logic
 
-Generate event handlers when you're ready to automate:
+Generate classes for events you want to process:
 ```bash
-bin/rails generate fuik:provider stripe checkout_session_completed customer_subscription_updated
+bin/rails generate fuik:provider stripe checkout_session_completed
 ```
 
 This creates:
 - `app/webhooks/stripe/base.rb`
 - `app/webhooks/stripe/checkout_session_completed.rb`
-- `app/webhooks/stripe/customer_subscription_updated.rb`
 
 Each class is a thin wrapper around your business logic:
 ```ruby
