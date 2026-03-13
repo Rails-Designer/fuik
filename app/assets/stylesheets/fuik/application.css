@@ -179,7 +179,19 @@
   }
 
   .json-highlight {
-    .json-key { color: oklch(35% .15 250); }
+    .json-key {
+      color: oklch(35% .15 250);
+      cursor: pointer;
+
+      &:hover {
+        background: oklch(90% 0.02 250);
+      }
+    }
+
+    .json-key-selected {
+      background: oklch(85% 0.05 250);
+    }
+
     .json-string { color: oklch(30% .18 160); }
     .json-number { color: oklch(40% .15 130); }
     .json-boolean { color: oklch(45% .18 260); }

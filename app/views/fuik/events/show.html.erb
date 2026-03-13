@@ -21,7 +21,7 @@
   <dd><%= @webhook_event.created_at.strftime("%Y-%m-%d %H:%M:%S") %></dd>
 
   <dt>Payload</dt>
-  <dd><pre id="payload" class="json-highlight"><%= highlighted JSON.pretty_generate(@webhook_event.payload) %></pre> <div class="actions"><%= button_to downloads_path, params: { event_id: @webhook_event.id }, method: :post, class: "" do %><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34Zm-56,83.32-24,24a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L120,164.69V120a8,8,0,0,1,16,0v44.69l10.34-10.35a8,8,0,0,1,11.32,11.32ZM152,88V44l44,44Z"/></svg><% end %> <%= render "copy_button", target: "payload" %></div></dd>
+  <dd><pre id="payload" data-root="payload" class="json-highlight"><%= highlighted(JSON.pretty_generate(@webhook_event.payload)) %></pre> <div class="actions"><%= button_to downloads_path, params: { event_id: @webhook_event.id }, method: :post, class: "" do %><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34Zm-56,83.32-24,24a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L120,164.69V120a8,8,0,0,1,16,0v44.69l10.34-10.35a8,8,0,0,1,11.32,11.32ZM152,88V44l44,44Z"/></svg><% end %> <%= render "copy_button", target: "payload" %></div></dd>
 
   <dt>Headers</dt>
   <dd><pre id="headers" class="json-highlight"><%= highlighted JSON.pretty_generate(@webhook_event.headers) %></pre> <div class="actions"><%= render "copy_button", target: "headers" %></div></dd>
@@ -31,3 +31,16 @@
     <dd><%= @webhook_event.error %></dd>
   <% end %>
 </dl>
+
+<script>
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("json-key")) {
+      const path = event.target.dataset.path;
+      const root = event.target.closest("[data-root]").dataset.root;
+      navigator.clipboard.writeText(root + path);
+
+      event.target.classList.add("json-key-selected");
+      setTimeout(() => event.target.classList.remove("json-key-selected"), 200);
+    }
+  });
+</script>
