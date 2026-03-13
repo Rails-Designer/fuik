@@ -68,6 +68,22 @@
       position: relative;
       overflow-x: auto;
     }
+
+    dd .copy-button .success-icon {
+      display: none;
+    }
+
+    dd .copy-button .copy-icon {
+      display: block;
+    }
+
+    dd:has([data-copy-success="true"]) .copy-button .copy-icon {
+      display: none;
+    }
+
+    dd:has([data-copy-success="true"]) .copy-button .success-icon {
+      display: block;
+    }
   }
 }
 
