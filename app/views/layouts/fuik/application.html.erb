@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Fuik Admin</title>
+  <title><%= content_for?(:title) ? yield(:title) : "Fuik Admin" %></title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
