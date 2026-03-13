@@ -149,6 +149,12 @@ event_id:
   key: custom_id
 ```
 
+The options for `event_type`'s source are:
+
+- header
+- payload
+- static; for cases when no event type is present in header or payload
+
 
 ## Add your custom provider
 

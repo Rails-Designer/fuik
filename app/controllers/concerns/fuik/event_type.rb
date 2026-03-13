@@ -32,6 +32,8 @@ module Fuik
         request.headers[config[key]["key"]]
       when "payload"
         payload[config[key]["key"]]
+      when "static"
+        config[key]["value"]
       end
     end
 
