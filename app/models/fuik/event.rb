@@ -2,6 +2,8 @@
 
 module Fuik
   class Event
+    using DotAccess
+
     def initialize(webhook_event)
       @webhook_event = webhook_event
     end
@@ -11,7 +13,7 @@ module Fuik
     end
 
     def payload
-      @webhook_event.payload
+      @webhook_event.payload.to_dot
     end
   end
 end

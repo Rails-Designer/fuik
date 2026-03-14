@@ -77,7 +77,7 @@ Each class is a thin wrapper around your business logic:
 module Stripe
   class CheckoutSessionCompleted < Base
     def process!
-      User.find_by(id: payload.dig("client_reference_id")).tap do |user|
+      User.find_by(id: payload.client_reference_id).tap do |user|
         user.activate_subscription!
         user.send_welcome_email
 
@@ -88,6 +88,17 @@ module Stripe
     end
   end
 end
+```
+
+The `payload` method supports dot notation and standard hash methods:
+```ruby
+# Dot notation
+payload.client_reference_id
+payload.customer.email
+
+# Hash syntax (strings/symbols)
+payload["client_reference_id"]
+payload[:customer_id]
 ```
 
 Implement `Base.verify!` to enable signature verification:
