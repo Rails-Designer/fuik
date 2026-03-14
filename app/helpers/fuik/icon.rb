@@ -2,7 +2,7 @@
 
 module Fuik
   module IconHelper
-    def icon(provider)
+    def fuik_icon(provider)
       provider = provider.to_s.downcase
       path = "fuik/icons/#{provider}.jpg"
 
