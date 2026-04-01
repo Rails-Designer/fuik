@@ -124,6 +124,24 @@ end
 If `Provider::Base.verify!` exists, Fuik calls it automatically. Invalid signatures return 401 without storing the webhook.
 
 
+### Provider allowlist
+
+By default:
+- **Development/test**: all providers are allowed
+- **Production/staging**: only providers in `app/webhooks/` are allowed
+
+Configure with `Fuik::Engine.config.providers_allowed`:
+```ruby
+# Allow all (including production)
+Fuik::Engine.config.providers_allowed = :all
+
+# Explicit allowlist (overrides directory scan)
+Fuik::Engine.config.providers_allowed = %w[stripe github shopify]
+```
+
+Unknown providers return `404 Not Found`.
+
+
 ### Pre-packaged providers
 
 Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates).

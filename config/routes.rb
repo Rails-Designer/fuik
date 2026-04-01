@@ -5,5 +5,5 @@ Fuik::Engine.routes.draw do
   resources :events, only: %w[show]
   resources :downloads, only: %w[create]
 
-  post ":provider", to: "webhooks#create"
+  post ":provider", to: "webhooks#create", constraints: Fuik::Routing::ProviderConstraint.new
 end
