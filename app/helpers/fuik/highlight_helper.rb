@@ -31,7 +31,7 @@ module Fuik
 
       object.each_with_index.map do |(key, value), index|
         key_path = current_path + [key]
-        path_string = key_path.map { "[\"#{it}\"]" }.join
+        path_string = key_path.map { it.is_a?(String) ? "[\"#{it}\"]" : "[#{it}]" }.join
 
         comma = (index == object.size - 1) ? "" : '<span class="json-punctuation">,</span>'
 
