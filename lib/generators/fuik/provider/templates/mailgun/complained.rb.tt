@@ -1,0 +1,12 @@
+module <%= provider_module_name %>
+  class Complained < Base
+    def process!
+      # payload["recipient"] # email address that marked as spam
+      # payload["timestamp"] # when the complaint occurred
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

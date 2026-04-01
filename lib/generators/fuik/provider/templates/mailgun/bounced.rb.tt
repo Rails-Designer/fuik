@@ -1,0 +1,14 @@
+module <%= provider_module_name %>
+  class Bounced < Base
+    def process!
+      # payload["recipient"] # email address that bounced
+      # payload["code"]      # bounce code (e.g., "MAILBOX_FULL")
+      # payload["error"]     # SMTP error response
+      # payload["reason"]    # human-readable reason
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

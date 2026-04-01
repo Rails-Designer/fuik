@@ -1,0 +1,12 @@
+module <%= provider_module_name %>
+  class EmailComplained < Base
+    def process!
+      # payload["data"]["email"]["to"] # recipient email
+      # payload["ts"]                  # timestamp
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

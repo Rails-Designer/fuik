@@ -1,0 +1,14 @@
+module <%= provider_module_name %>
+  class UserUnsubscribed < Base
+    def process!
+      # payload["user"]["id"]         # Userlist user ID
+      # payload["user"]["identifier"] # your internal user ID
+      # payload["user"]["email"]      # user email
+      # payload["user"]["properties"] # custom user properties
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

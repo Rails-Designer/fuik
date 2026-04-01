@@ -1,13 +1,14 @@
 module Stripe
   class PaymentIntentSucceeded < Base
     def process!
+      # payload["data"]["object"]["id"]       # payment intent ID
+      # payload["data"]["object"]["amount"]   # amount in cents
+      # payload["data"]["object"]["customer"] # customer ID
+      # payload["data"]["object"]["currency"] # e.g., "usd"
+
       # TODO: Add business logic
 
       @webhook_event.processed!
     end
-
-    private
-
-    def payment_intent_id = payload["data"]["object"]["id"]
   end
 end

@@ -1,0 +1,12 @@
+module <%= provider_module_name %>
+  class ContactUnsubscribed < Base
+    def process!
+      # payload["contactIdentity"]["email"] # user email
+      # payload["contactIdentity"]["id"]    # Loops contact ID
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

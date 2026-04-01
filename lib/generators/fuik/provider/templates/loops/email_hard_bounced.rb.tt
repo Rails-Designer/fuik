@@ -1,0 +1,14 @@
+module <%= provider_module_name %>
+  class EmailHardBounced < Base
+    def process!
+      # payload["contact"]["email"]        # recipient email
+      # payload["email"]["id"]             # Loops email ID
+      # payload["email"]["emailMessageId"] # Postmark message ID
+      # payload["email"]["subject"]        # email subject
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

@@ -1,6 +1,9 @@
 module <%= provider_module_name %>
   class EmailSpam < Base
     def process!
+      # payload["to"]        # recipient email
+      # payload["timestamp"] # when marked as spam
+
       # TODO: Add business logic
 
       @webhook_event.processed!

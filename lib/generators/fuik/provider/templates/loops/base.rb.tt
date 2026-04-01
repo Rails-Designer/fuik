@@ -1,0 +1,17 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    def self.verify!(request)
+      secret = Rails.application.credentials.dig(:loops, :signing_secret)
+      secret_bytes = Base64.strict_decode64(secret.split("_")[1])
+
+      webhook_id = request.headers["webhook-id"]
+      timestamp = request.headers["webhook-timestamp"]
+      signature = request.headers["webhook-signature"]
+
+      signed_content = "#{webhook_id}.#{timestamp}.#{request.raw_post}"
+      expected_signature = OpenSSL::HMAC.digest("SHA256", secret_bytes, signed_content)
+
+      raise Fuik::InvalidSignature unless signature.split(" ").any? { |sig| sig.include?(",#{expected_signature}") }
+    end
+  end
+end

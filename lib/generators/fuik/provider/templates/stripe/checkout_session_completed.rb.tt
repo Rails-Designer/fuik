@@ -1,14 +1,14 @@
 module Stripe
   class CheckoutSessionCompleted < Base
     def process!
+      # payload["data"]["object"]["id"]                  # session ID
+      # payload["data"]["object"]["customer"]            # customer ID
+      # payload["data"]["object"]["client_reference_id"] # your internal reference
+      # payload["data"]["object"]["amount_total"]        # amount in cents
+
       # TODO: Add business logic
-      # session = Stripe::Checkout::Session.retrieve(session_id) # this assumes the Stripe gem is available
 
       @webhook_event.processed!
     end
-
-    private
-
-    def session_id = payload.dig("data", "object", "id")
   end
 end

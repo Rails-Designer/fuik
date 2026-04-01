@@ -1,13 +1,14 @@
 module Stripe
   class CustomerSubscriptionUpdated < Base
     def process!
+      # payload["data"]["object"]["id"]       # subscription ID
+      # payload["data"]["object"]["customer"] # customer ID
+      # payload["data"]["object"]["status"]   # e.g., "active", "past_due"
+      # payload["data"]["object"]["price"]    # price object
+
       # TODO: Add business logic
 
       @webhook_event.processed!
     end
-
-    private
-
-    def subscription_id = payload.dig("data", "object", "id")
   end
 end

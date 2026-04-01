@@ -1,0 +1,18 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    def self.verify!(request)
+      secret = Rails.application.credentials.dig(:mailgun, :signing_key)
+      signature_base64 = request.headers["Signature"]
+      timestamp = request.headers["Timestamp"]
+      token = request.headers["Token"]
+
+      signature = Base64.strict_decode64(signature_base64)
+      data = "#{timestamp}#{token}"
+
+      raise Fuik::InvalidSignature unless ActiveSupport::SecurityUtils.secure_compare(
+        OpenSSL::HMAC.digest("SHA256", secret, data),
+        signature
+      )
+    end
+  end
+end

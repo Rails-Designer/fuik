@@ -1,0 +1,17 @@
+module <%= provider_module_name %>
+  class Bounce < Base
+    def process!
+      # payload["Email"]       # email address that bounced
+      # payload["Type"]        # bounce type (e.g., "HardBounce", "SoftBounce")
+      # payload["BouncedAt"]   # ISO 8601 timestamp
+      # payload["Inactive"]    # boolean - address is deactivated
+      # payload["CanActivate"] # boolean - can be reactivated
+      # payload["MessageID"]   # Postmark message ID
+      # payload["Description"] # human-readable description
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

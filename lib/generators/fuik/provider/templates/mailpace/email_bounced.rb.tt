@@ -1,7 +1,8 @@
 module <%= provider_module_name %>
   class EmailBounced < Base
     def process!
-      bounce_type = payload["bounce_type"]
+      # payload["to"]          # recipient email
+      # payload["bounce_type"] # e.g., "hard", "soft"
 
       # TODO: Add business logic
 

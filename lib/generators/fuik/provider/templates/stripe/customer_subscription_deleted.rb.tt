@@ -1,7 +1,8 @@
 module Stripe
   class CustomerSubscriptionDeleted < Base
     def process!
-      subscription_id = payload.dig("data", "object", "id")
+      # payload["data"]["object"]["id"]       # subscription ID
+      # payload["data"]["object"]["customer"] # customer ID
 
       # TODO: Add business logic
 

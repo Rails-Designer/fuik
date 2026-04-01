@@ -1,0 +1,18 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    def self.verify!(request)
+      secret = Rails.application.credentials.dig(:userlist, :webhook_secret)
+      header = request.headers["Userlist-Signature"]
+      body = request.raw_post
+
+      parts = header.split(",")
+      timestamp = parts[0].split("=")[1]
+      signature = parts[1].split("=")[1]
+
+      signed_payload = "#{timestamp}.#{body}"
+      expected_signature = OpenSSL::HMAC.hexdigest("SHA256", secret, signed_payload)
+
+      raise Fuik::InvalidSignature unless Rack::Utils.secure_compare(signature, expected_signature)
+    end
+  end
+end

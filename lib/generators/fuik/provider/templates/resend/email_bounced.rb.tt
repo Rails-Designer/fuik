@@ -1,0 +1,14 @@
+module <%= provider_module_name %>
+  class EmailBounced < Base
+    def process!
+      # payload["data"]["emails"][0]["to"]          # recipient email
+      # payload["data"]["bounce"]["classification"] # bounce type
+      # payload["data"]["bounce"]["subtype"]        # bounce subtype
+      # payload["ts"]                               # timestamp
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end
