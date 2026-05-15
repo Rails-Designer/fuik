@@ -13,7 +13,7 @@ module Fuik
         provider: params[:provider],
         event_id: event_id,
         event_type: event_type,
-        body: request.raw_post,
+        body: body_json,
         headers: headers
       )
 
@@ -29,6 +29,12 @@ module Fuik
     end
 
     private
+
+    def body_json
+      return request.raw_post unless request.media_type == "application/x-www-form-urlencoded"
+
+      Rack::Utils.parse_nested_query(request.raw_post).to_json
+    end
 
     def verify_signature!
       return unless should_verify?
@@ -47,7 +53,7 @@ module Fuik
       @payload ||= begin
         return {} if request.raw_post.blank?
 
-        JSON.parse(request.raw_post)
+        JSON.parse(body_json)
       rescue JSON::ParserError
         {}
       end

@@ -162,5 +162,73 @@ module Fuik
 
       assert_response :internal_server_error
     end
+
+    test "creates webhook event with application/x-www-form-urlencoded payload" do
+      assert_difference "WebhookEvent.count", 1 do
+        post "/webhooks/stripe",
+          params: "id=evt_form_123&type=checkout.session.completed&amount=5000",
+          headers: { "Content-Type" => "application/x-www-form-urlencoded", "Stripe-Signature" => "valid_signature" }
+      end
+
+      assert_response :ok
+
+      event = WebhookEvent.last
+      assert_equal "stripe", event.provider
+      assert_equal "evt_form_123", event.event_id
+      assert_equal "checkout.session.completed", event.event_type
+      assert_equal "processed", event.status
+      assert_equal({ "id" => "evt_form_123", "type" => "checkout.session.completed", "amount" => "5000" }, event.payload)
+    end
+
+    test "handles form-urlencoded with charset parameter" do
+      assert_difference "WebhookEvent.count", 1 do
+        post "/webhooks/stripe",
+          params: "id=evt_charset_123&type=payment.succeeded",
+          headers: { "Content-Type" => "application/x-www-form-urlencoded; charset=utf-8", "Stripe-Signature" => "valid_signature" }
+      end
+
+      assert_response :ok
+
+      event = WebhookEvent.last
+      assert_equal "evt_charset_123", event.event_id
+      assert_equal "payment.succeeded", event.event_type
+    end
+
+    test "parses nested form fields correctly" do
+      post "/webhooks/stripe",
+        params: "id=evt_nested_123&data[amount]=5000&data[currency]=usd",
+        headers: { "Content-Type" => "application/x-www-form-urlencoded", "Stripe-Signature" => "valid_signature" }
+
+      assert_response :ok
+
+      event = WebhookEvent.last
+      assert_equal "evt_nested_123", event.event_id
+      assert_equal({ "id" => "evt_nested_123", "data" => { "amount" => "5000", "currency" => "usd" } }, event.payload)
+    end
+
+    test "handles array-style form fields" do
+      post "/webhooks/stripe",
+        params: "id=evt_array_123&items[]=one&items[]=two",
+        headers: { "Content-Type" => "application/x-www-form-urlencoded", "Stripe-Signature" => "valid_signature" }
+
+      assert_response :ok
+
+      event = WebhookEvent.last
+      assert_equal "evt_array_123", event.event_id
+      assert_equal ["one", "two"], event.payload["items"]
+    end
+
+    test "handles empty form-urlencoded body gracefully" do
+      post "/webhooks/stripe",
+        params: "",
+        headers: { "Content-Type" => "application/x-www-form-urlencoded", "Stripe-Signature" => "valid_signature" }
+
+      assert_response :ok
+
+      event = WebhookEvent.last
+      assert_equal Digest::MD5.hexdigest(""), event.event_id
+      assert_equal "unknown", event.event_type
+      assert_equal({}, event.payload)
+    end
   end
 end
