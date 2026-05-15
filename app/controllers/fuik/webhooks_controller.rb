@@ -13,7 +13,7 @@ module Fuik
         provider: params[:provider],
         event_id: event_id,
         event_type: event_type,
-        body: body_json,
+        body: json_body,
         headers: headers
       )
 
@@ -30,8 +30,8 @@ module Fuik
 
     private
 
-    def body_json
-      return request.raw_post unless request.media_type == "application/x-www-form-urlencoded"
+    def json_body
+      return request.raw_post unless url_encoded_body?
 
       Rack::Utils.parse_nested_query(request.raw_post).to_json
     end
@@ -53,7 +53,7 @@ module Fuik
       @payload ||= begin
         return {} if request.raw_post.blank?
 
-        JSON.parse(body_json)
+        JSON.parse(json_body)
       rescue JSON::ParserError
         {}
       end
@@ -64,6 +64,10 @@ module Fuik
       return unless event_class
 
       event_class.new(webhook_event).process!
+    end
+
+    def url_encoded_body?
+      request.media_type == "application/x-www-form-urlencoded"
     end
 
     def event_class_for(provider, event_type)
