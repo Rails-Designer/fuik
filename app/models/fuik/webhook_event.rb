@@ -4,6 +4,8 @@ module Fuik
   class WebhookEvent < ApplicationRecord
     self.table_name = "fuik_webhook_events"
 
+    include Filterable
+
     enum :status, %w[pending processed failed].index_by(&:itself), default: "pending"
 
     validates :provider, presence: true

@@ -101,6 +101,7 @@
 @layer components {
   .events {
     list-style: none;
+    margin-block-start: 1rem;
 
     li {
       --icon-width: 1.125rem;
@@ -161,6 +162,64 @@
     &[data-status="processed"]::before { color: oklch(65% .15 150); }
 
     &[data-status="failed"]::before { color: oklch(60% .2 25); }
+  }
+
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    fieldset {
+      border: 0;
+
+      legend {
+        font-size: .875rem;
+        font-weight: 400;
+        color: var(--color-text-muted);
+      }
+
+      input[type="radio"] {
+        position: absolute;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      .pills {
+        display: inline-flex;
+        background: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: .3rem;
+        overflow: clip;
+
+        .pill {
+          display: inline-flex;
+          align-items: center;
+          padding: .25rem .75rem;
+          font-size: .875rem;
+          font-weight: 400;
+          border-inline-start: 1px solid var(--color-border);
+          cursor: pointer;
+          transition: all ease-in-out 100ms;
+
+          &:first-child { border-inline-start: 0; }
+
+          &:has(input:checked),
+          &:hover:not(:has(input:checked)) {
+            background-color: var(--color-bg-hover);
+          }
+        }
+      }
+    }
+
+    select {
+      padding: .4rem .75rem;
+      font-size: .875rem;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: .25rem;
+      cursor: pointer;
+    }
+
+    [type=submit] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
   }
 
   button,

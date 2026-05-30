@@ -5,7 +5,7 @@ module Fuik
     layout "fuik/application"
 
     def index
-      @webhook_events = WebhookEvent.order(created_at: :desc)
+      @webhook_events = WebhookEvent.filtered(params).order(created_at: :desc)
     end
 
     def show

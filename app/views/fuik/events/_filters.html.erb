@@ -1,0 +1,29 @@
+<%= form_tag root_path, method: :get, id: :filters do %>
+  <div class="filters">
+    <fieldset>
+      <legend>Provider</legend>
+
+      <%= select_tag :provider, options_for_select(Fuik::WebhookEvent.options_for_select, params[:provider]), prompt: "All", data: {action: "form#submit", target: "filters"} %>
+    </fieldset>
+
+    <fieldset>
+      <legend>Status</legend>
+
+      <span class="pills">
+        <%= label_tag nil, class: "pill" do %>
+          <%= radio_button_tag :status, "", params[:status].blank? || params[:status].empty?, data: {action: "form#submit", target: "filters"} %>
+          All
+        <% end %>
+
+        <% Fuik::WebhookEvent.statuses.keys.each do |status| %>
+          <%= label_tag nil, class: "pill" do %>
+            <%= radio_button_tag :status, status, params[:status] == status, data: {action: "form#submit", target: "filters"} %>
+            <%= status.capitalize %>
+          <% end %>
+        <% end %>
+      </span>
+    </fieldset>
+
+    <%= submit_tag "Filter" %>
+  </div>
+<% end %>
