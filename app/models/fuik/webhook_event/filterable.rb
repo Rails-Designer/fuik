@@ -7,10 +7,10 @@ module Fuik
 
       class_methods do
         def filtered(params)
-          records = all
-          records = records.where(status: params[:status]) if params[:status].present?
-          records = records.where(provider: params[:provider]) if params[:provider].present?
-          records
+          events = all
+          events = events.where(status: params[:status]) if params[:status].present?
+          events = events.where(provider: params[:provider]) if params[:provider].present?
+          events
         end
 
         def options_for_select
