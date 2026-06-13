@@ -7,3 +7,5 @@ ActiveRecord::Migrator.migrations_paths = [ File.expand_path("../test/dummy/db/m
 ActiveRecord::Migrator.migrations_paths << File.expand_path("../db/migrate", __dir__)
 
 require "rails/test_help"
+
+ActiveJob::Base.queue_adapter = :inline
