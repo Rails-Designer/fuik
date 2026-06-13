@@ -1,0 +1,13 @@
+module <%= provider_module_name %>
+  class Unsubscribe < Base
+    def process!
+      # payload.rcpt  # email address that unsubscribed
+      # payload.subject  # email subject
+      # payload.email_id  # email identifier
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end
