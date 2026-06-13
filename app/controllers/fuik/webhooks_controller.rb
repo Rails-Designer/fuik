@@ -17,7 +17,7 @@ module Fuik
         headers: headers
       )
 
-      process!(webhook_event)
+      process_later!(webhook_event)
 
       head :ok
     rescue Fuik::InvalidSignature
@@ -64,6 +64,13 @@ module Fuik
       return unless event_class
 
       event_class.new(webhook_event).process!
+    end
+
+    def process_later!(webhook_event)
+      event_class = event_class_for(webhook_event.provider, webhook_event.event_type)
+      return unless event_class
+
+      WebhookProcessingJob.perform_later(event_class.name, webhook_event)
     end
 
     def url_encoded_body?
