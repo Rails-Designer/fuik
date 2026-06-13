@@ -1,0 +1,4 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+  end
+end

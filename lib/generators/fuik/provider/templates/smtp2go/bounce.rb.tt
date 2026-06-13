@@ -1,0 +1,16 @@
+module <%= provider_module_name %>
+  class Bounce < Base
+    def process!
+      # payload.rcpt  # email address that bounced
+      # payload.bounce  # "hard" or "soft"
+      # payload.host  # recipient server
+      # payload.message  # SMTP error message
+      # payload.subject  # email subject
+      # payload.email_id  # email identifier
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end
