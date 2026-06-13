@@ -1,0 +1,16 @@
+module <%= provider_module_name %>
+  class MessageFailed < Base
+    def process!
+      # payload.data.recipient  # email address that failed
+      # payload.data.reason  # failure reason (e.g., "A network error occurred.")
+      # payload.data.response.status_code  # SMTP status code
+      # payload.data.subject  # email subject
+      # payload.data.message_id  # message UUID
+      # payload.data.tag  # message tag (or nil)
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end
