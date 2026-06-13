@@ -1,0 +1,16 @@
+module <%= provider_module_name %>
+  class MessageSoftBounced < Base
+    def process!
+      # payload.data.recipient  # email address that soft bounced
+      # payload.data.response.enhanced_status_code  # SMTP enhanced status code (e.g., "4.2.2")
+      # payload.data.response.content  # SMTP response text (e.g., "Mailbox full")
+      # payload.data.subject  # email subject
+      # payload.data.message_id  # message UUID
+      # payload.data.tag  # message tag (or nil)
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

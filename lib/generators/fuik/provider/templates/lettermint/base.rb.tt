@@ -1,0 +1,32 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    def self.verify!(request)
+      secret = Rails.application.credentials.dig(:lettermint, :signing_secret)
+      signature_header = request.headers["X-Lettermint-Signature"] || ""
+
+      elements = {}
+      signature_header.split(",").each do |element|
+        key, value = element.split("=", 2)
+
+        elements[key] = value if key && value
+      end
+
+      timestamp = elements["t"]
+      signature = elements["v1"]
+
+      raise Fuik::InvalidSignature if timestamp.blank? || signature.blank?
+
+      now = Time.current.to_i
+      raise Fuik::InvalidSignature if (now - timestamp.to_i).abs > TOLERANCE
+
+      signed_payload = "#{timestamp}.#{request.raw_post}"
+      expected = OpenSSL::HMAC.hexdigest("SHA256", secret, signed_payload)
+
+      raise Fuik::InvalidSignature unless ActiveSupport::SecurityUtils.secure_compare(expected, signature)
+    end
+
+    private
+
+    TOLERANCE = 5.minutes
+  end
+end

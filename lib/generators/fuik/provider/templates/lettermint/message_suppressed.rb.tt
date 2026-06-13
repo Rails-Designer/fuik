@@ -1,0 +1,15 @@
+module <%= provider_module_name %>
+  class MessageSuppressed < Base
+    def process!
+      # payload.data.recipient  # email address that was suppressed
+      # payload.data.reason  # suppression reason (e.g., "hard_bounce", "spam_complaint")
+      # payload.data.subject  # email subject
+      # payload.data.message_id  # message UUID
+      # payload.data.tag  # message tag (or nil)
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end
