@@ -233,8 +233,17 @@
     &:hover {
       color: oklch(from var(--color-text) l c h);
       transition: transform ease-in-out 300ms;
-      transform: scale(1.10);
+      transform: scale(1.05);
     }
+  }
+
+  .retry-button {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    margin-inline-start: .5rem;
+    padding: .25rem .75rem;
+    border: 1px solid var(--color-border);
   }
 
   .json-highlight {
@@ -256,5 +265,9 @@
     .json-boolean { color: oklch(45% .18 260); }
     .json-null { color: oklch(50% .05 250); }
     .json-punctuation { color: oklch(20% .03 250); }
+  }
+
+  .errors {
+    font-family: "Courier New", Courier, monospace;
   }
 }

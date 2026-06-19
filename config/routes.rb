@@ -2,7 +2,9 @@
 
 Fuik::Engine.routes.draw do
   root to: "events#index"
-  resources :events, only: %w[show]
+  resources :events, only: %w[show] do
+    resources :retries, only: %w[create]
+  end
   resources :downloads, only: %w[create]
 
   post ":provider", to: "webhooks#create", constraints: Fuik::Routing::ProviderConstraint.new

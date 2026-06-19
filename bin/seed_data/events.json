@@ -60,5 +60,18 @@
       "user-agent": "Postmark Webhook"
     },
     "status": "processed"
+  },
+
+  {
+    "provider": "stripe",
+    "event_id": "evt_failed_001",
+    "event_type": "checkout.session.completed",
+    "body": "{\"id\":\"evt_failed_001\",\"object\":\"event\",\"data\":{\"object\":{\"id\":\"cs_test_failed\",\"amount_total\":5000,\"currency\":\"usd\",\"status\":\"complete\",\"customer\":\"cus_failed\",\"client_reference_id\":\"order_999\"}}}",
+    "headers": {
+      "stripe-signature": "t=1234567890,v1=failed_sig",
+      "content-type": "application/json"
+    },
+    "status": "failed",
+    "error": "NoMethodError: undefined method `charge' for nil"
   }
 ]
