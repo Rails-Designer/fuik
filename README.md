@@ -64,7 +64,7 @@ Visit `/webhooks` to see all received webhooks. Click any event to view all the 
 * **Copy payload as JSON**: click a button, payload is in your clipboard
 * **Download payload as JSON file**: keep it for testing, debugging or throw it at your LLM agent, bot or colleague
 * **Add `.json` to any URL**: get the raw payload without the UI
-* **Click any key to get the Ruby accessor path**: click `product_id` (as seen in the screenshot above) and get `payload["line_items"][0]["product_id"]` (say what? 🤯)
+* **Click any key to get the Ruby accessor path**: click any key and get, e.g. `payload["line_items"][0]["product_id"]` (say what? 🤯)
 
 
 ### Add business logic
