@@ -6,6 +6,11 @@ module Fuik
 
     def index
       @webhook_events = WebhookEvent.filtered(params).order(created_at: :desc)
+
+      respond_to do |format|
+        format.html
+        format.json { render json: @webhook_events }
+      end
     end
 
     def show

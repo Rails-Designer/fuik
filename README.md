@@ -59,12 +59,15 @@ Visit `/webhooks` to see all received webhooks. Click any event to view all the 
 
 ⚠️ The `/webhooks` path is by default not protected. Easiest is to set `Fuik::Engine.config.events_controller_parent` to a controller that requires authentication.
 
+
 ### Dashboard features
 
 * **Copy payload as JSON**: click a button, payload is in your clipboard
 * **Download payload as JSON file**: keep it for testing, debugging or throw it at your LLM agent, bot or colleague
 * **Add `.json` to any URL**: get the raw payload without the UI
+* **`GET /events.json`**: index as JSON with filter support
 * **Click any key to get the Ruby accessor path**: click any key and get, e.g. `payload["line_items"][0]["product_id"]` (say what? 🤯)
+
 
 
 ### Add business logic
