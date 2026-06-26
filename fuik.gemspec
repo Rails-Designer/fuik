@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "A fish trap for webhooks"
   spec.description = "Fuik (Dutch for fish trap) is a Rails engine that catches and stores webhooks from any provider. View all events in the admin interface, then create event classes to add your business logic."
-  spec.homepage = "https://railsdesigner.com/fuik/"
+  spec.homepage = "https://railsdesigner.com/open-source/fuik/"
   spec.license = "MIT"
 
   spec.metadata["homepage_uri"] = spec.homepage

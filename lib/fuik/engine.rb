@@ -8,7 +8,7 @@ module Fuik
 
     config.webhooks_controller_parent = "ActionController::Base"
     config.events_controller_parent = "ActionController::Base"
-    config.providers_allowed = Rails.env.local?
+    config.providers_allowed = Rails.env.development? || Rails.env.test?
 
     config.to_prepare do
       ActiveSupport.on_load(:action_view) do
