@@ -7,15 +7,16 @@ module Fuik
 
       class_methods do
         def filtered(params)
-          events = all
-          events = events.where(status: params[:status]) if params[:status].present?
-          events = events.where(provider: params[:provider]) if params[:provider].present?
-          events
+          where(params.permit(*FILTERS).compact_blank.transform_values { it.split(",") })
         end
 
         def options_for_select
           by_provider_name.pluck(:provider).map { [it.humanize, it] }
         end
+
+        private
+
+        FILTERS = %w[status provider event_id event_type]
       end
 
       included do
