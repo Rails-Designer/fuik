@@ -21,14 +21,28 @@ module Fuik
       {}
     end
 
+    # Mark the event as successfully processed.
+    #
+    # @return [Boolean] true if the update succeeded
     def processed!
       update!(status: "processed")
     end
 
+    # Mark the event as failed and record the error.
+    #
+    # @param error [String, nil] optional error message or object
+    #
+    # @return [Boolean] true if the update succeeded
     def failed!(error = nil)
       update!(status: "failed", error: error.to_s)
     end
 
+    # Retry a failed event. Resets its status back to pending, clears the error,
+    # and enqueues processing via WebhookProcessingJob.
+    #
+    # @raise [RuntimeError] if the event is not in a failed state
+    #
+    # @return [Boolean] true if the update succeeded
     def retry!
       raise "Can only retry failed events" unless failed?
 
