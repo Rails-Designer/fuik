@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-color-scheme="<%= Fuik::Engine.config.color_scheme %>">
 <head>
   <title><%= content_for?(:title) ? yield(:title) : "Fuik Admin" %></title>
   <%= csrf_meta_tags %>

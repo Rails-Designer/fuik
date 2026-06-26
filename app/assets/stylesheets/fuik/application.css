@@ -2,10 +2,19 @@
 
 @layer base {
   :root {
-    --color-text: oklch(30% 0.02 250);
-    --color-text-muted: oklch(55% 0.02 250);
-    --color-border: oklch(90% 0.01 250);
-    --color-bg-hover: oklch(97% 0.01 250);
+    color-scheme: light; /* TODO: add `dark` */
+
+    --gray-50: oklch(98.7% 0.002 197.1);
+    --gray-100: oklch(96.3% 0.002 197.1);
+    --gray-200: oklch(92.5% 0.005 214.3);
+    --gray-300: oklch(87.2% 0.007 219.6);
+    --gray-400: oklch(72.3% 0.014 214.4);
+    --gray-500: oklch(56% 0.021 213.5);
+    --gray-600: oklch(45% 0.017 213.2);
+    --gray-700: oklch(37.8% 0.015 216);
+    --gray-800: oklch(27.5% 0.011 216.9);
+    --gray-900: oklch(21.8% 0.008 223.9);
+    --gray-950: oklch(14.8% 0.004 228.8);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,7 +22,7 @@
   body {
     font-family: system-ui, -apple-system, sans-serif;
     line-height: 1.5;
-    color: var(--color-text);
+    color: var(--gray-800);
   }
 
   main {
@@ -29,9 +38,9 @@
     letter-spacing: -.025em;
 
     a {
-      color: var(--color-text-muted);
+      color: var(--gray-500);
 
-      &:hover { color: var(--color-text); }
+      &:hover { color: var(--gray-800); }
     }
   }
 
@@ -48,7 +57,7 @@
     padding-inline: 1rem;
     max-height: calc(20lh + 1rem);
     font-size: .875rem;
-    background: var(--color-bg-hover);
+    background: var(--gray-100);
     border-radius: .5rem;
     overflow-x: auto;
   }
@@ -61,7 +70,7 @@
 
     dt {
       font-weight: 600;
-      color: var(--color-text);
+      color: var(--gray-800);
     }
 
     dd {
@@ -80,8 +89,8 @@
     svg {
       width: 1rem;
       aspect-ratio: 1 / 1;
-      color: oklch(from var(--color-text) l c h / 80%);
-      background: var(--color-bg);
+      color: var(--gray-800);
+      background: var(--gray-100);
     }
 
     dd .copy-button .success-icon {
@@ -109,7 +118,7 @@
       padding-block: .5rem;
       padding-inline: .75rem;
 
-      &:hover { background: var(--color-bg-hover); }
+      &:hover { background: var(--gray-100); }
 
       a {
         display: grid;
@@ -139,7 +148,7 @@
     }
 
     li:not(:first-child) {
-      border-top: 1px solid var(--color-border);
+      border-top: 1px solid var(--gray-200);
     }
   }
 
@@ -175,7 +184,7 @@
       legend {
         font-size: .875rem;
         font-weight: 400;
-        color: var(--color-text-muted);
+        color: var(--gray-500);
       }
 
       input[type="radio"] {
@@ -185,8 +194,8 @@
 
       .pills {
         display: inline-flex;
-        background: var(--color-bg);
-        border: 1px solid var(--color-border);
+        background: var(--gray-50);
+        border: 1px solid var(--gray-200);
         border-radius: .3rem;
         overflow: clip;
 
@@ -196,7 +205,7 @@
           padding: .25rem .75rem;
           font-size: .875rem;
           font-weight: 400;
-          border-inline-start: 1px solid var(--color-border);
+          border-inline-start: 1px solid var(--gray-200);
           cursor: pointer;
           transition: all ease-in-out 100ms;
 
@@ -204,7 +213,7 @@
 
           &:has(input:checked),
           &:hover:not(:has(input:checked)) {
-            background-color: var(--color-bg-hover);
+            background-color: var(--gray-100);
           }
         }
       }
@@ -213,8 +222,8 @@
     select {
       padding: .4rem .75rem;
       font-size: .875rem;
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
       border-radius: .25rem;
       cursor: pointer;
     }
@@ -225,15 +234,16 @@
   button,
   .copy-button {
     padding: .125rem;
-    background: var(--color-bg);
+    background: var(--gray-100);
     border: 0;
     border-radius: .25rem;
     cursor: pointer;
 
     &:hover {
-      color: oklch(from var(--color-text) l c h);
+      color: var(--gray-800);
       transition: transform ease-in-out 300ms;
-      transform: scale(1.05);
+
+      & svg { transform: scale(1.05); }
     }
   }
 
@@ -243,7 +253,7 @@
     gap: .25rem;
     margin-inline-start: .5rem;
     padding: .25rem .75rem;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--gray-200);
   }
 
   .json-highlight {
