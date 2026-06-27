@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html data-color-scheme="<%= Fuik::Engine.config.color_scheme %>">
+<html>
 <head>
   <title><%= content_for?(:title) ? yield(:title) : "Fuik Admin" %></title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
   <%= yield :head %>
+
+  <style>
+    :root {
+      color-scheme: <%= {
+        auto: "light dark",
+        light: "light",
+        dark: "dark"
+      }.fetch(Fuik::Engine.config.color_scheme.to_sym) %>;
+    }
+  </style>
 
   <%= stylesheet_link_tag "fuik/application", media: "all" %>
   <script src="<%= asset_path("attractivejs-0.12.0.min.js") %>"></script>
