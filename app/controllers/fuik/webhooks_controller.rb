@@ -17,14 +17,29 @@ module Fuik
         headers: headers
       )
 
+      Notifications.received(
+        provider: params[:provider],
+        event_id: event_id,
+        event_type: event_type,
+        webhook_event: webhook_event
+      )
+
       webhook_event.process_later!
 
       head :ok
     rescue Fuik::InvalidSignature
+      Notifications.signature_invalid(
+        provider: params[:provider],
+        event_id: event_id
+      )
       head :unauthorized
     rescue ActiveRecord::RecordNotUnique
       head :ok
-    rescue
+    rescue => error
+      Notifications.receive_error(
+        provider: request.path_parameters[:provider],
+        error: error
+      )
       head :internal_server_error
     end
 
