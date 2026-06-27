@@ -1,7 +1,7 @@
-<% content_for :title, "#{@webhook_event.provider} / #{@webhook_event.event_type} | Fuik Admin" %>
+<% content_for :title, "#{@webhook_event.provider} / #{@webhook_event.event_type} - #{Fuik::Engine.config.title}" %>
 
 <h1>
-  <%= link_to "Webhooks", root_path %> / <%= @webhook_event.event_id %>
+  <%= link_to Fuik::Engine.config.title, root_path %> / <%= @webhook_event.event_id %>
 </h1>
 
 <dl>
