@@ -133,6 +133,70 @@ end
 If `Provider::Base.verify!` exists, Fuik calls it automatically. Invalid signatures return 401 without storing the webhook.
 
 
+### Testing event classes
+
+Unit test your `process!` methods without a database using the built-in test helper:
+```ruby
+# test/test_helper.rb
+require "fuik/test_helpers"
+
+class ActiveSupport::TestCase
+  include Fuik::TestHelpers
+end
+```
+
+```ruby
+# test/webhooks/stripe/checkout_session_completed_test.rb
+module Stripe
+  class CheckoutSessionCompletedTest < ActiveSupport::TestCase
+    test "processes a completed checkout" do
+      event = build_webhook_event(
+        provider: "stripe",
+        event_type: "checkout.session.completed",
+        payload: { "client_reference_id" => "user_123" }
+      )
+
+      CheckoutSessionCompleted.new(event).process!
+
+      assert_equal "processed", event.status
+    end
+
+    test "fails when customer is not found" do
+      event = build_webhook_event(
+        provider: "stripe",
+        event_type: "checkout.session.completed",
+        payload: {}
+      )
+
+      CheckoutSessionCompleted.new(event).process!
+
+      assert_equal "failed", event.status
+      assert_equal "Customer not found", event.error
+    end
+  end
+end
+```
+
+Your `process!` calls `@webhook_event.processed!` on success and `@webhook_event.failed!(error)` on failure:
+```ruby
+module Stripe
+  class CheckoutSessionCompleted < Base
+    def process!
+      user = User.find_by(id: payload.client_reference_id)
+
+      if user.present?
+        user.activate_subscription!
+
+        @webhook_event.processed!
+      else
+        @webhook_event.failed!("Customer not found")
+      end
+    end
+  end
+end
+```
+
+
 ### Provider allowlist
 
 By default:
