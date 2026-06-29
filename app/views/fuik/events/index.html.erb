@@ -1,4 +1,4 @@
-<h1>Webhooks</h1>
+<h1 class="heading"><%= Fuik::Engine.config.title %></h1>
 
 <%= render "filters" %>
 
@@ -20,4 +20,8 @@
       <% end %>
     </li>
   <% end %>
+
+  <li class="empty-state">
+    <p>No webhook events…</p>
+  </li>
 </ul>
