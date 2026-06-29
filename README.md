@@ -133,6 +133,37 @@ end
 If `Provider::Base.verify!` exists, Fuik calls it automatically. Invalid signatures return 401 without storing the webhook.
 
 
+### Custom job class
+
+Webhook events are processed asynchronously by `Fuik::WebhookProcessingJob`. When processing raises, the event is marked as `failed` so you can retry it from the dashboard.
+
+Define a custom job class, then configure Fuik to use it:
+```ruby
+# app/jobs/webhook_processing_job.rb
+class WebhookProcessingJob < ApplicationJob
+  queue_as :webhooks
+
+  retry_on MyApp::WebhookError, attempts: 5
+  discard_on ActiveJob::DeserializationError
+
+  def perform(event_class_name, webhook_event)
+    event_class_name.safe_constantize.new(webhook_event).process!
+  end
+end
+```
+
+```ruby
+# config/initializers/fuik.rb
+Fuik.configure do |config|
+  config.webhook_processing_job_class = "WebhookProcessingJob"
+end
+```
+
+The `perform` method receives two arguments:
+- `event_class_name`: a string like `"Stripe::CheckoutSessionCompleted"` that resolves to your event class
+- `webhook_event`: the `Fuik::WebhookEvent` record with the payload, headers and status
+
+
 ### Provider allowlist
 
 By default:
