@@ -11,7 +11,7 @@ module Fuik
     config.providers_allowed = Rails.env.development? || Rails.env.test?
 
     config.title = "Webhooks"
-    config.color_scheme = :light
+    config.color_scheme = :auto
 
     config.to_prepare do
       ActiveSupport.on_load(:action_view) do

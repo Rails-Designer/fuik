@@ -2,17 +2,17 @@
 
 @layer base {
   :root {
-    --gray-50: oklch(98.7% 0.002 197.1);
-    --gray-100: oklch(96.3% 0.002 197.1);
-    --gray-200: oklch(92.5% 0.005 214.3);
-    --gray-300: oklch(87.2% 0.007 219.6);
-    --gray-400: oklch(72.3% 0.014 214.4);
-    --gray-500: oklch(56% 0.021 213.5);
-    --gray-600: oklch(45% 0.017 213.2);
-    --gray-700: oklch(37.8% 0.015 216);
-    --gray-800: oklch(27.5% 0.011 216.9);
-    --gray-900: oklch(21.8% 0.008 223.9);
-    --gray-950: oklch(14.8% 0.004 228.8);
+    --gray-50: oklch(98.7% .002 197.1);
+    --gray-100: oklch(96.3% .002 197.1);
+    --gray-200: oklch(92.5% .005 214.3);
+    --gray-300: oklch(87.2% .007 219.6);
+    --gray-400: oklch(72.3% .014 214.4);
+    --gray-500: oklch(56% .021 213.5);
+    --gray-600: oklch(45% .017 213.2);
+    --gray-700: oklch(37.8% .015 216);
+    --gray-800: oklch(27.5% .011 216.9);
+    --gray-900: oklch(21.8% .008 223.9);
+    --gray-950: oklch(14.8% .004 228.8);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,7 +20,7 @@
   body {
     font-family: system-ui, -apple-system, sans-serif;
     line-height: 1.5;
-    color: light-dark(var(--gray-800), var(--gray-100));
+    color: light-dark(var(--gray-800), var(--gray-200));
     background-color: light-dark(white, var(--gray-950));
   }
 
@@ -28,19 +28,6 @@
     padding: 2rem;
     max-inline-size: 80rem;
     margin-inline: auto;
-  }
-
-  h1 {
-    margin-block-end: 1rem;
-    font-size: 1.875rem;
-    font-weight: 700;
-    letter-spacing: -.025em;
-
-    a {
-      color: light-dark(var(--gray-500), var(--gray-400));
-
-      &:hover { color: light-dark(var(--gray-800), var(--gray-200)); }
-    }
   }
 
   a {
@@ -62,67 +49,28 @@
     border-radius: .375rem;
     overflow-x: auto;
   }
-
-  dl {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1rem 2rem;
-    overflow: hidden;
-
-    dt {
-      display: flex;
-      align-items: center;
-      font-weight: 500;
-      color: light-dark(var(--gray-700), var(--gray-400));
-    }
-
-    .icon {
-      width: 1.125rem;
-      aspect-ratio: 1/1;
-      margin-right: .25rem;
-      border-radius: .15rem;
-    }
-
-    dd {
-      position: relative;
-      display: flex;
-      align-items: center;
-      overflow-x: auto;
-
-      svg {
-        margin-left: .25rem;
-      }
-    }
-
-    .actions {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      position: absolute;
-      top: .5rem; right: .5rem;
-    }
-
-    svg {
-      width: 1rem;
-      aspect-ratio: 1 / 1;
-      color: light-dark(var(--gray-800), var(--gray-200));
-    }
-
-    dd .copy-button .success-icon {
-      display: none;
-    }
-
-    dd:has([data-copy-success="true"]) .copy-button .copy-icon {
-      display: none;
-    }
-
-    dd:has([data-copy-success="true"]) .copy-button .success-icon {
-      display: block;
-    }
-  }
 }
 
 @layer components {
+  .heading {
+    margin-block-end: 1rem;
+    font-size: 1.875rem;
+    font-weight: 550;
+    letter-spacing: -.0125em;
+    color: light-dark(var(--gray-700), var(--gray-100));
+
+    .divider {
+      font-weight: 400;
+      color: light-dark(var(--gray-600), var(--gray-300));
+    }
+
+    a {
+      color: light-dark(var(--gray-500), var(--gray-400));
+
+      &:hover { color: light-dark(var(--gray-800), var(--gray-200)); }
+    }
+  }
+
   .events {
     list-style: none;
     margin-block-start: 1rem;
@@ -165,6 +113,15 @@
     li:not(:first-child) {
       border-top: 1px solid light-dark(var(--gray-100), var(--gray-800));
     }
+
+    .empty-state {
+      display: none;
+      font-size: .875rem;
+      font-weight: 300;
+      color: light-dark(var(--gray-400), var(--gray-500));
+
+      &:only-child { display: block; }
+    }
   }
 
   .status {
@@ -177,7 +134,7 @@
       width: .5rem;
       aspect-ratio: 1/1;
       background-color: currentColor;
-      border: 1.75px solid oklch(from currentColor 0.9 c h / 0.8);
+      border: 1.75px solid oklch(from currentColor .9 c h / .8);
       border-radius: .5rem;
     }
 
@@ -246,6 +203,63 @@
     [type=submit] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
   }
 
+  .details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem 2rem;
+    overflow: hidden;
+
+    .description {
+      display: flex;
+      align-items: baseline;
+      margin-block-start: .125em;
+      font-weight: 500;
+      color: light-dark(var(--gray-700), var(--gray-400));
+    }
+
+    .icon {
+      width: 1.125rem;
+      aspect-ratio: 1/1;
+      margin-right: .25rem;
+      border-radius: .15rem;
+    }
+
+    .value {
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+
+      button { margin-left: .25rem; }
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      position: absolute;
+      top: .5rem; right: .5rem;
+    }
+
+    svg {
+      width: 1rem;
+      aspect-ratio: 1 / 1;
+      color: light-dark(var(--gray-800), var(--gray-200));
+    }
+
+    dd .copy-button .success-icon {
+      display: none;
+    }
+
+    dd:has([data-copy-success="true"]) .copy-button .copy-icon {
+      display: none;
+    }
+
+    dd:has([data-copy-success="true"]) .copy-button .success-icon {
+      display: block;
+    }
+  }
+
   button,
   .copy-button {
     padding: .125rem;
@@ -281,12 +295,12 @@
       }
 
       #payload &:hover {
-        background: light-dark(oklch(from currentColor l c h / 0.1), oklch(from currentColor l c h / 0.2));
+        background: light-dark(oklch(from currentColor l c h / .1), oklch(from currentColor l c h / .2));
       }
     }
 
     .json-key-selected {
-      background: light-dark(oklch(85% 0.05 250), oklch(25% 0.08 250));
+      background: light-dark(oklch(85% .05 250), oklch(25% .08 250));
     }
 
     .json-string { color: light-dark(oklch(30% .18 160), oklch(72% .18 160)); user-select: all; }
@@ -301,8 +315,8 @@
     padding-inline: 1rem;
     max-height: calc(20lh + 1rem);
     font-size: .875rem;
-    color: light-dark(oklch(50.5% 0.213 27.52), oklch(88.5% 0.062 18.33));
-    background: light-dark(oklch(97.1% 0.013 17.38), oklch(25.8% 0.092 26.04));
+    color: light-dark(oklch(50.5% .213 27.52), oklch(88.5% .062 18.33));
+    background: light-dark(oklch(97.1% .013 17.38), oklch(25.8% .092 26.04 / .5));
     border-radius: .5rem;
     overflow-x: auto;
     font-family: "Courier New", Courier, monospace;
