@@ -215,11 +215,6 @@ Fuik::Engine.config.providers_allowed = %w[stripe github shopify]
 Unknown providers return `404 Not Found`.
 
 
-### Pre-packaged providers
-
-Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates).
-
-
 ### Event type & ID lookup
 
 Fuik automatically extracts event types and IDs from common locations:
@@ -255,6 +250,31 @@ The options for `event_type`'s source are:
 - header
 - payload
 - static; for cases when no event type is present in header or payload
+
+
+## Monitoring
+
+Fuik publishes lifecycle events via `ActiveSupport::Notifications`. Subscribe to track webhook activity:
+```ruby
+ActiveSupport::Notifications.subscribe("webhook_received.fuik") do |event|
+  Rails.logger.info("[Fuik] Received #{event.payload[:provider]}:#{event.payload[:event_type]}")
+end
+```
+
+Available events:
+
+| Event | When it fires |
+|---|---|
+| `webhook_received.fuik` | Event record created |
+| `webhook_processed.fuik` | `process!` completed |
+| `webhook_failed.fuik` | `process!` raised |
+| `webhook_signature_invalid.fuik` | Signature verification failed (401) |
+| `webhook_receive_error.fuik` | Unexpected error during receive (500) |
+
+
+### Pre-packaged providers
+
+Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates).
 
 
 ## Add your custom provider
