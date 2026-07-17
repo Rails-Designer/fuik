@@ -5,15 +5,16 @@ module Fuik
     private
 
     COMMON_EVENT_TYPE_HEADERS = [
-      "X-Github-Event",
       "X-Event-Type",
-      "X-Webhook-Event"
+      "X-Webhook-Event",
+      "Webhook-Event"
     ]
 
     COMMON_EVENT_ID_HEADERS = [
-      "X-GitHub-Delivery",
       "X-Event-Id",
-      "X-Webhook-Id"
+      "X-Webhook-Id",
+      "Webhook-Id",
+      "webhook-id"
     ]
 
     def event_type
