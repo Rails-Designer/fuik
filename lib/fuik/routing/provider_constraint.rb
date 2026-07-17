@@ -15,13 +15,13 @@ module Fuik
 
       private
 
-      def allow_all? = Fuik::Engine.config.providers_allowed.in?([:all, "all"])
+      def allow_all? = Fuik.configuration.providers_allowed.in?([:all, "all"])
 
-      def explicit_allowlist? = Fuik::Engine.config.providers_allowed.is_a?(Array)
+      def explicit_allowlist? = Fuik.configuration.providers_allowed.is_a?(Array)
 
-      def explicit_allowlist = Fuik::Engine.config.providers_allowed.to_set
+      def explicit_allowlist = Fuik.configuration.providers_allowed.to_set
 
-      def providers_allowed = Fuik::Engine.config.providers_allowed
+      def providers_allowed = Fuik.configuration.providers_allowed
 
       def scanned_allowlist
         @scanned_allowlist ||= Dir["#{Rails.root}/app/webhooks/*"]

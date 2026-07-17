@@ -57,7 +57,7 @@ Visit `/webhooks` to see all received webhooks. Click any event to view all the 
 
 <img alt="Fuik event detail interface" src="https://raw.githubusercontent.com/Rails-Designer/fuik/HEAD/.github/docs/event-detail.jpg" style="max-width: 100%;">
 
-⚠️ The `/webhooks` path is by default not protected. Easiest is to set `Fuik::Engine.config.events_controller_parent` to a controller that requires authentication.
+⚠️ The `/webhooks` path is by default not protected. Set `Fuik.configuration.events_controller_parent` to a controller that requires authentication.
 
 
 ### Dashboard features
@@ -133,6 +133,18 @@ end
 If `Provider::Base.verify!` exists, Fuik calls it automatically. Invalid signatures return 401 without storing the webhook.
 
 
+### Configuration
+
+Configure Fuik in `config/initializers/fuik.rb`:
+```ruby
+Fuik.configure do |config|
+  # config.events_controller_parent = "AdministrationController"
+  # config.providers_allowed = %w[stripe github postmark]
+end
+```
+
+
+
 ### Testing event classes
 
 Unit test your `process!` methods without a database using the built-in test helper:
@@ -203,13 +215,13 @@ By default:
 - **Development/test**: all providers are allowed
 - **Production/staging**: only providers in `app/webhooks/` are allowed
 
-Configure with `Fuik::Engine.config.providers_allowed`:
+Configure with `Fuik.configuration.providers_allowed`:
 ```ruby
 # Allow all (including production)
-Fuik::Engine.config.providers_allowed = :all
+Fuik.configuration.providers_allowed = :all
 
 # Explicit allowlist (overrides directory scan)
-Fuik::Engine.config.providers_allowed = %w[stripe github shopify]
+Fuik.configuration.providers_allowed = %w[stripe github postmark]
 ```
 
 Unknown providers return `404 Not Found`.

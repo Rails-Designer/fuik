@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= content_for?(:title) ? yield(:title) : Fuik::Engine.config.title %></title>
+  <title><%= content_for?(:title) ? yield(:title) : Fuik.configuration.title %></title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
@@ -13,7 +13,7 @@
         auto: "light dark",
         light: "light",
         dark: "dark"
-      }.fetch(Fuik::Engine.config.color_scheme.to_sym) %>;
+      }.fetch(Fuik.configuration.color_scheme.to_sym) %>;
     }
   </style>
 

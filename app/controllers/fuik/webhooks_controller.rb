@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Fuik
-  class WebhooksController < Fuik::Engine.config.webhooks_controller_parent.constantize
+  class WebhooksController < Fuik.configuration.webhooks_controller_parent.constantize
     include EventType
 
     skip_before_action :verify_authenticity_token
