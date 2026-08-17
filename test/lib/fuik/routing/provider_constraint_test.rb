@@ -4,7 +4,7 @@ module Fuik
   module Routing
     class ProviderConstraintTest < ActionDispatch::IntegrationTest
       test "allows all providers when config is :all" do
-        Fuik::Engine.config.providers_allowed = :all
+        Fuik.configuration.providers_allowed = :all
 
         post "/webhooks/anything",
           params: { id: "evt_123" }.to_json,
@@ -14,7 +14,7 @@ module Fuik
       end
 
       test "allows all providers when config is 'all'" do
-        Fuik::Engine.config.providers_allowed = "all"
+        Fuik.configuration.providers_allowed = "all"
 
         post "/webhooks/anything",
           params: { id: "evt_123" }.to_json,
@@ -24,7 +24,7 @@ module Fuik
       end
 
       test "allows providers from explicit array" do
-        Fuik::Engine.config.providers_allowed = %w[stripe chirpform]
+        Fuik.configuration.providers_allowed = %w[stripe chirpform]
 
         post "/webhooks/stripe",
           params: { id: "evt_1", type: "checkout.session.completed" }.to_json,
@@ -43,7 +43,7 @@ module Fuik
       end
 
       test "defaults to allow all in local environment" do
-        Fuik::Engine.config.providers_allowed = nil
+        Fuik.configuration.providers_allowed = nil
 
         post "/webhooks/any_provider",
           params: { id: "evt_123" }.to_json,
@@ -53,7 +53,7 @@ module Fuik
       end
 
       teardown do
-        Fuik::Engine.config.providers_allowed = nil
+        Fuik.configuration.providers_allowed = nil
       end
     end
   end
