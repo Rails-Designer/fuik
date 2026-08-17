@@ -57,7 +57,7 @@ Visit `/webhooks` to see all received webhooks. Click any event to view all the 
 
 <img alt="Fuik event detail interface" src="https://raw.githubusercontent.com/Rails-Designer/fuik/HEAD/.github/docs/event-detail.jpg" style="max-width: 100%;">
 
-⚠️ The `/webhooks` path is by default not protected. Easiest is to set `Fuik::Engine.config.events_controller_parent` to a controller that requires authentication.
+⚠️ The `/webhooks` path is by default not protected. Set `Fuik.configuration.events_controller_parent` to a controller that requires authentication.
 
 
 ### Dashboard features
@@ -133,6 +133,17 @@ end
 If `Provider::Base.verify!` exists, Fuik calls it automatically. Invalid signatures return 401 without storing the webhook.
 
 
+### Configuration
+
+Configure Fuik in `config/initializers/fuik.rb`:
+```ruby
+Fuik.configure do |config|
+  # config.events_controller_parent = "AdministrationController"
+  # config.providers_allowed = %w[stripe github postmark]
+end
+```
+
+
 ### Custom job class
 
 Webhook events are processed asynchronously by `Fuik::WebhookProcessingJob`. When processing raises, the event is marked as `failed` so you can retry it from the dashboard.
@@ -164,27 +175,86 @@ The `perform` method receives two arguments:
 - `webhook_event`: the `Fuik::WebhookEvent` record with the payload, headers and status
 
 
+### Testing event classes
+
+Unit test your `process!` methods without a database using the built-in test helper:
+```ruby
+# test/test_helper.rb
+require "fuik/test_helpers"
+
+class ActiveSupport::TestCase
+  include Fuik::TestHelpers
+end
+```
+
+```ruby
+# test/webhooks/stripe/checkout_session_completed_test.rb
+module Stripe
+  class CheckoutSessionCompletedTest < ActiveSupport::TestCase
+    test "processes a completed checkout" do
+      event = build_webhook_event(
+        provider: "stripe",
+        event_type: "checkout.session.completed",
+        payload: { "client_reference_id" => "user_123" }
+      )
+
+      CheckoutSessionCompleted.new(event).process!
+
+      assert_equal "processed", event.status
+    end
+
+    test "fails when customer is not found" do
+      event = build_webhook_event(
+        provider: "stripe",
+        event_type: "checkout.session.completed",
+        payload: {}
+      )
+
+      CheckoutSessionCompleted.new(event).process!
+
+      assert_equal "failed", event.status
+      assert_equal "Customer not found", event.error
+    end
+  end
+end
+```
+
+Your `process!` calls `@webhook_event.processed!` on success and `@webhook_event.failed!(error)` on failure:
+```ruby
+module Stripe
+  class CheckoutSessionCompleted < Base
+    def process!
+      user = User.find_by(id: payload.client_reference_id)
+
+      if user.present?
+        user.activate_subscription!
+
+        @webhook_event.processed!
+      else
+        @webhook_event.failed!("Customer not found")
+      end
+    end
+  end
+end
+```
+
+
 ### Provider allowlist
 
 By default:
 - **Development/test**: all providers are allowed
 - **Production/staging**: only providers in `app/webhooks/` are allowed
 
-Configure with `Fuik::Engine.config.providers_allowed`:
+Configure with `Fuik.configuration.providers_allowed`:
 ```ruby
 # Allow all (including production)
-Fuik::Engine.config.providers_allowed = :all
+Fuik.configuration.providers_allowed = :all
 
 # Explicit allowlist (overrides directory scan)
-Fuik::Engine.config.providers_allowed = %w[stripe github shopify]
+Fuik.configuration.providers_allowed = %w[stripe github postmark]
 ```
 
 Unknown providers return `404 Not Found`.
-
-
-### Pre-packaged providers
-
-Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates).
 
 
 ### Event type & ID lookup
@@ -192,36 +262,63 @@ Fuik includes ready-to-use [templates for common providers](https://github.com/R
 Fuik automatically extracts event types and IDs from common locations:
 
 **Event Type:**
-1. provider config (if exists);
+1. provider Base class (if configured);
 2. common headers (`X-Github-Event`, `X-Event-Type`, etc.);
 3. payload (`type`, `event`, `event_type`);
 4. falls back to `"unknown"`.
 
 **Event ID:**
-1. provider config (if exists);
+1. provider Base class (if configured);
 2. common headers (`X-GitHub-Delivery`, `X-Event-Id`, etc.);
 3. payload (`id`).
 4. falls back to MD5 hash of request body.
 
 
-#### Custom lookup via config
+#### Custom lookup
 
-Create `app/webhooks/provider_name/config.yml`:
-```yaml
-event_type:
-  source: header
-  key: X-Custom-Event
-
-event_id:
-  source: payload
-  key: custom_id
+Define `event_type` and/or `event_id` on your provider's Base class if Fuik can't find them on its own:
+```ruby
+module CustomProvider
+  class Base < Fuik::Event
+    event_type header: "X-Custom-Event"
+    event_id header: "X-Custom-Id"
+  end
+end
 ```
 
-The options for `event_type`'s source are:
+You can also read from the payload body or use a static value:
+```ruby
+event_type payload: "event_type"  # payload["event_type"]
+event_type payload: "data.type"  # nested via dot-notation (payload["data"]["type"])
+event_type "always_this_value"  # static/literal
 
-- header
-- payload
-- static; for cases when no event type is present in header or payload
+event_id payload: "id"
+```
+
+
+### Pre-packaged providers
+
+Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates).
+
+
+## Monitoring
+
+Fuik publishes lifecycle events via `ActiveSupport::Notifications`. Subscribe to track webhook activity:
+```ruby
+ActiveSupport::Notifications.subscribe("webhook_received.fuik") do |event|
+  Rails.logger.info("[Fuik] Received #{event.payload[:provider]}:#{event.payload[:event_type]}")
+end
+```
+
+Available events:
+
+| Event | When it fires |
+|---|---|
+| `webhook_received.fuik` | Event record created |
+| `webhook_processed.fuik` | `process!` completed |
+| `webhook_failed.fuik` | `process!` raised |
+| `webhook_signature_invalid.fuik` | Signature verification failed (401) |
+| `webhook_receive_error.fuik` | Unexpected error during receive (500) |
 
 
 ## Add your custom provider

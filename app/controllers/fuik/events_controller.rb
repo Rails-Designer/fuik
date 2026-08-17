@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Fuik
-  class EventsController < Fuik::Engine.config.events_controller_parent.constantize
+  class EventsController < Fuik.configuration.events_controller_parent.constantize
     layout "fuik/application"
 
     def index

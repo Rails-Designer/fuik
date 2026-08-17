@@ -4,6 +4,19 @@ module Fuik
   class Event
     using DotAccess
 
+    class_attribute :event_type_config, default: nil
+    class_attribute :event_id_config, default: nil
+
+    class << self
+      def event_type(key = nil, **options)
+        self.event_type_config = key || options
+      end
+
+      def event_id(key = nil, **options)
+        self.event_id_config = key || options
+      end
+    end
+
     def initialize(webhook_event)
       @webhook_event = webhook_event
     end

@@ -218,6 +218,50 @@ module Fuik
       assert_equal ["one", "two"], event.payload["items"]
     end
 
+    test "publishes webhook_received notification on successful receipt" do
+      events = []
+
+      ActiveSupport::Notifications.subscribed(->(name, payload) { events << [name, payload] }, "webhook_received.fuik") do
+        post "/webhooks/stripe",
+          params: { id: "evt_notif_1", type: "test.type" }.to_json,
+          headers: { "Content-Type" => "application/json", "Stripe-Signature" => "valid_signature" }
+      end
+
+      assert_equal 1, events.size
+      assert_equal "webhook_received.fuik", events.first[0]
+      assert_equal "stripe", events.first[1][:provider]
+      assert_equal "evt_notif_1", events.first[1][:event_id]
+      assert_equal "test.type", events.first[1][:event_type]
+    end
+
+    test "publishes webhook_signature_invalid notification on invalid signature" do
+      events = []
+
+      ActiveSupport::Notifications.subscribed(->(name, payload) { events << [name, payload] }, "webhook_signature_invalid.fuik") do
+        post "/webhooks/stripe",
+          params: { id: "evt_bad_sig", type: "test" }.to_json,
+          headers: { "Content-Type" => "application/json", "Stripe-Signature" => "invalid_signature" }
+      end
+
+      assert_equal 1, events.size
+      assert_equal "webhook_signature_invalid.fuik", events.first[0]
+      assert_equal "stripe", events.first[1][:provider]
+    end
+
+    test "publishes webhook_receive_error notification on unexpected error" do
+      events = []
+
+      ActiveSupport::Notifications.subscribed(->(name, payload) { events << [name, payload] }, "webhook_receive_error.fuik") do
+        post "/webhooks/stripe",
+          params: "invalid json{{{",
+          headers: { "Content-Type" => "application/json", "Stripe-Signature" => "valid_signature" }
+      end
+
+      assert_equal 1, events.size
+      assert_equal "webhook_receive_error.fuik", events.first[0]
+      assert events.first[1][:error].is_a?(StandardError)
+    end
+
     test "handles empty form-urlencoded body gracefully" do
       post "/webhooks/stripe",
         params: "",

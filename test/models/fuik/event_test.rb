@@ -1,21 +1,18 @@
 require "test_helper"
+require "fuik/test_helpers"
 
 module Fuik
   class EventTest < ActiveSupport::TestCase
+    include Fuik::TestHelpers
+
     def setup
-      webhook_event = Class.new do
-        attr_reader :payload
-
-        def initialize(payload)
-          @payload = payload
-        end
-      end
-
-      @webhook_event = webhook_event.new({
-        "client_reference_id" => "user_123",
-        "type" => "checkout.session.completed",
-        "customer" => { "email" => "test@example.com" }
-      })
+      @webhook_event = build_webhook_event(
+        payload: {
+          "client_reference_id" => "user_123",
+          "type" => "checkout.session.completed",
+          "customer" => { "email" => "test@example.com" }
+        }
+      )
       @event = Event.new(@webhook_event)
     end
 

@@ -9,6 +9,12 @@ module Fuik
     rescue => error
       webhook_event.failed!(error)
 
+      Notifications.failed(
+        webhook_event: webhook_event,
+        event_class: event_class_name,
+        error: error
+      )
+
       raise
     end
   end

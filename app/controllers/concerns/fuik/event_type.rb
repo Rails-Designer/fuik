@@ -5,23 +5,44 @@ module Fuik
     private
 
     COMMON_EVENT_TYPE_HEADERS = [
-      "X-Github-Event",
       "X-Event-Type",
-      "X-Webhook-Event"
+      "X-Webhook-Event",
+      "Webhook-Event"
     ]
 
     COMMON_EVENT_ID_HEADERS = [
-      "X-GitHub-Delivery",
       "X-Event-Id",
-      "X-Webhook-Id"
+      "X-Webhook-Id",
+      "Webhook-Id",
+      "webhook-id"
     ]
 
     def event_type
-      from_config("event_type") || from_event_type_headers || from_payload_type || "unknown"
+      from_base_class_event_type || from_config("event_type") || from_event_type_headers || from_payload_type || "unknown"
     end
 
     def event_id
-      from_config("event_id") || from_event_id_headers || payload["id"] || Digest::MD5.hexdigest(request.raw_post)
+      from_base_class_event_id || from_config("event_id") || from_event_id_headers || payload["id"] || Digest::MD5.hexdigest(request.raw_post)
+    end
+
+    def from_base_class_event_type
+      config = base_class&.event_type_config
+
+      return if !config
+      return config if config.is_a?(String)
+      return request.headers[config[:header]] if config.key?(:header)
+
+      payload.dig(*config[:payload].to_s.split(".")) if config.key?(:payload)
+    end
+
+    def from_base_class_event_id
+      config = base_class&.event_id_config
+
+      return if !config
+      return config if config.is_a?(String)
+      return request.headers[config[:header]] if config.key?(:header)
+
+      payload.dig(*config[:payload].to_s.split(".")) if config.key?(:payload)
     end
 
     def from_config(key)
@@ -53,7 +74,11 @@ module Fuik
       @config ||= begin
         config_path = Rails.root.join("app/webhooks/#{params[:provider]}/config.yml")
 
-        File.exist?(config_path) ? YAML.load_file(config_path) : nil
+        if File.exist?(config_path)
+          Fuik.deprecator.warn("Using config.yml is deprecated. Define event_type/event_id on #{params[:provider].camelize}::Base instead.")
+
+          YAML.load_file(config_path)
+        end
       end
     end
   end
