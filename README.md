@@ -188,6 +188,11 @@ The options for `event_type`'s source are:
 - static; for cases when no event type is present in header or payload
 
 
+### Pre-packaged providers
+
+Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates).
+
+
 ## Monitoring
 
 Fuik publishes lifecycle events via `ActiveSupport::Notifications`. Subscribe to track webhook activity:
@@ -206,11 +211,6 @@ Available events:
 | `webhook_failed.fuik` | `process!` raised |
 | `webhook_signature_invalid.fuik` | Signature verification failed (401) |
 | `webhook_receive_error.fuik` | Unexpected error during receive (500) |
-
-
-### Pre-packaged providers
-
-Fuik includes ready-to-use [templates for common providers](https://github.com/Rails-Designer/fuik/tree/main/lib/generators/fuik/provider/templates).
 
 
 ## Add your custom provider
