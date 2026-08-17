@@ -220,36 +220,38 @@ Unknown providers return `404 Not Found`.
 Fuik automatically extracts event types and IDs from common locations:
 
 **Event Type:**
-1. provider config (if exists);
+1. provider Base class (if configured);
 2. common headers (`X-Github-Event`, `X-Event-Type`, etc.);
 3. payload (`type`, `event`, `event_type`);
 4. falls back to `"unknown"`.
 
 **Event ID:**
-1. provider config (if exists);
+1. provider Base class (if configured);
 2. common headers (`X-GitHub-Delivery`, `X-Event-Id`, etc.);
 3. payload (`id`).
 4. falls back to MD5 hash of request body.
 
 
-#### Custom lookup via config
+#### Custom lookup
 
-Create `app/webhooks/provider_name/config.yml`:
-```yaml
-event_type:
-  source: header
-  key: X-Custom-Event
-
-event_id:
-  source: payload
-  key: custom_id
+Define `event_type` and/or `event_id` on your provider's Base class if Fuik can't find them on its own:
+```ruby
+module CustomProvider
+  class Base < Fuik::Event
+    event_type header: "X-Custom-Event"
+    event_id header: "X-Custom-Id"
+  end
+end
 ```
 
-The options for `event_type`'s source are:
+You can also read from the payload body or use a static value:
+```ruby
+event_type payload: "event_type"  # payload["event_type"]
+event_type payload: "data.type"  # nested via dot-notation (payload["data"]["type"])
+event_type "always_this_value"  # static/literal
 
-- header
-- payload
-- static; for cases when no event type is present in header or payload
+event_id payload: "id"
+```
 
 
 ### Pre-packaged providers

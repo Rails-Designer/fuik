@@ -1,4 +1,5 @@
 module <%= provider_module_name %>
   class Base < Fuik::Event
+    event_type header: "X-Postmark-Event"
   end
 end
