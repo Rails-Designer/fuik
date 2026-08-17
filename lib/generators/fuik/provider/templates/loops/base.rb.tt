@@ -1,5 +1,7 @@
 module <%= provider_module_name %>
   class Base < Fuik::Event
+    event_id header: "webhook-id"
+
     def self.verify!(request)
       secret = Rails.application.credentials.dig(:loops, :signing_secret)
       secret_bytes = Base64.strict_decode64(secret.split("_")[1])
