@@ -1,0 +1,13 @@
+module <%= provider_module_name %>
+  class ResourceScheduled < Base
+    def process!
+      # payload["data"]["id"]            # resource id
+      # payload["data"]["filename"]      # e.g., "posts/hello-world.md"
+      # payload["data"]["published_at"]  # ISO8601 scheduled publish time
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

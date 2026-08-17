@@ -1,0 +1,12 @@
+module <%= provider_module_name %>
+  class ResourceUnscheduled < Base
+    def process!
+      # payload["data"]["id"]        # resource id
+      # payload["data"]["filename"]  # e.g., "posts/hello-world.md"
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end

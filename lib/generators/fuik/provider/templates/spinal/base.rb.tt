@@ -1,0 +1,16 @@
+module <%= provider_module_name %>
+  class Base < Fuik::Event
+    event_type payload: "type"
+    event_id   payload: "data.id"
+
+    # def self.verify!(request)
+    #   secret = Rails.application.credentials.dig(:spinal, :webhook_secret)
+    #   signature = request.headers["webhook-signature"]
+    #   id = request.headers["webhook-id"]
+    #   timestamp = request.headers["webhook-timestamp"]
+
+    #   expected = OpenSSL::HMAC.base64digest("SHA256", secret, "#{id}.#{timestamp}.#{request.raw_post}")
+    #   raise Fuik::InvalidSignature unless Rack::Utils.secure_compare(signature, "v1,#{expected}")
+    # end
+  end
+end

@@ -1,0 +1,14 @@
+module <%= provider_module_name %>
+  class ResourceCreated < Base
+    def process!
+      # payload["data"]["id"]             # resource id
+      # payload["data"]["filename"]       # e.g., "posts/hello-world.md"
+      # payload["data"]["relative_path"]  # e.g., "posts/hello-world"
+      # payload["data"]["status"]         # "draft" | "published"
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end
