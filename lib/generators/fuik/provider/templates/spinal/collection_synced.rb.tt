@@ -1,0 +1,14 @@
+module <%= provider_module_name %>
+  class CollectionSynced < Base
+    def process!
+      # payload["data"]["id"]                # collection id
+      # payload["data"]["stats"]["added"]    # resources added during sync
+      # payload["data"]["stats"]["updated"]  # resources updated during sync
+      # payload["data"]["stats"]["removed"]  # resources removed during sync
+
+      # TODO: Add business logic
+
+      @webhook_event.processed!
+    end
+  end
+end
