@@ -1,5 +1,21 @@
 require "test_helper"
 
+module Test
+  class Test < Fuik::Event
+    def process!
+      @webhook_event.processed!
+    end
+  end
+
+  class ProcessingJob < ActiveJob::Base
+    cattr_accessor :performed, default: false
+
+    def perform(*)
+      self.class.performed = true
+    end
+  end
+end
+
 module Fuik
   class WebhookEventTest < ActiveSupport::TestCase
     test "retry! resets and reprocesses a failed event" do
@@ -43,6 +59,26 @@ module Fuik
       )
 
       assert_raises(RuntimeError, match: /failed/) { event.retry! }
+    end
+
+    test "process_later! uses configured job class" do
+      original = Fuik.webhook_processing_job_class
+      event = WebhookEvent.create!(
+        provider: "test",
+        event_id: "evt_cfg_1",
+        event_type: "test",
+        body: {}.to_json,
+        headers: {}
+      )
+
+      Fuik.configure { it.webhook_processing_job_class = "Test::ProcessingJob" }
+
+      event.process_later!
+
+      assert Test::ProcessingJob.performed
+    ensure
+      Fuik.webhook_processing_job_class = original
+      Test::ProcessingJob.performed = false
     end
   end
 end

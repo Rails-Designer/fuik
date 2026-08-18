@@ -53,7 +53,7 @@ module Fuik
     def process_later!
       event_class = self.class.event_class_for(provider, event_type)
 
-      WebhookProcessingJob.perform_later(event_class.name, self) if event_class
+      Fuik.webhook_processing_job_class.constantize.perform_later(event_class.name, self) if event_class
     end
   end
 end
