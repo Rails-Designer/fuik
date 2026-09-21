@@ -42,7 +42,7 @@ module Fuik
         assert_response :not_found
       end
 
-      test "defaults to allow all in local environment" do
+      test "allows all providers by default" do
         Fuik.configuration.providers_allowed = nil
 
         post "/webhooks/any_provider",
@@ -50,6 +50,18 @@ module Fuik
           headers: { "Content-Type" => "application/json" }
 
         assert_response :ok
+      end
+
+      test "allows all providers by default outside development and test" do
+        Fuik.configuration.providers_allowed = nil
+
+        with_non_local_env do
+          post "/webhooks/any_provider",
+            params: { id: "evt_123" }.to_json,
+            headers: { "Content-Type" => "application/json" }
+
+          assert_response :ok
+        end
       end
 
       teardown do

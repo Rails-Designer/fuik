@@ -2,6 +2,7 @@
 
 module Fuik
   class Configuration
+    attr_writer :dashboard_enabled
     attr_accessor :events_controller_parent, :webhooks_controller_parent,
       :providers_allowed, :title, :color_scheme, :webhook_processing_job_class
 
@@ -13,6 +14,12 @@ module Fuik
       @title = "Webhooks"
       @color_scheme = :light
     end
+
+    def dashboard_enabled? = @dashboard_enabled.nil? ? local_env? : @dashboard_enabled
+
+    private
+
+    def local_env? = Rails.env.development? || Rails.env.test?
   end
 
   class << self

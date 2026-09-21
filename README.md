@@ -57,7 +57,8 @@ Visit `/webhooks` to see all received webhooks. Click any event to view all the 
 
 <img alt="Fuik event detail interface" src="https://raw.githubusercontent.com/Rails-Designer/fuik/HEAD/.github/docs/event-detail.jpg" style="max-width: 100%;">
 
-⚠️ The `/webhooks` path is by default not protected. Set `Fuik.configuration.events_controller_parent` to a controller that requires authentication.
+> [!IMPORTANT]
+> The dashboard is enabled in development and test only (not authenticated). For production, set `Fuik.configuration.dashboard_enabled = true` and point `Fuik.configuration.events_controller_parent` to a controller that requires authentication.
 
 
 ### Dashboard features
@@ -140,6 +141,7 @@ Configure Fuik in `config/initializers/fuik.rb`:
 Fuik.configure do |config|
   # config.events_controller_parent = "AdministrationController"
   # config.providers_allowed = %w[stripe github postmark]
+  # config.dashboard_enabled = Rails.env.development? || Rails.env.test?
 end
 ```
 
@@ -241,20 +243,13 @@ end
 
 ### Provider allowlist
 
-By default:
-- **Development/test**: all providers are allowed
-- **Production/staging**: only providers in `app/webhooks/` are allowed
-
-Configure with `Fuik.configuration.providers_allowed`:
+By default all providers are accepted, in every environment. Tighten with `Fuik.configuration.providers_allowed`:
 ```ruby
-# Allow all (including production)
-Fuik.configuration.providers_allowed = :all
-
-# Explicit allowlist (overrides directory scan)
+# Explicit allowlist
 Fuik.configuration.providers_allowed = %w[stripe github postmark]
 ```
 
-Unknown providers return `404 Not Found`.
+Providers not in the allowlist return `404 Not Found`.
 
 
 ### Event type & ID lookup
