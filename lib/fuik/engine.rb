@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "fuik/routing/provider_constraint"
+require "fuik/routing/dashboard_constraint"
 
 module Fuik
   class Engine < ::Rails::Engine

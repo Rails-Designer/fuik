@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Fuik::DownloadsController < ApplicationController
+class Fuik::DownloadsController < Fuik.configuration.events_controller_parent.constantize
   def create
     webhook_event = Fuik::WebhookEvent.find(params[:event_id])
 
