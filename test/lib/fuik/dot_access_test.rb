@@ -32,6 +32,21 @@ module Fuik
       assert_equal "premium", @payload.dig("data", "object", "metadata", "plan")
     end
 
+    test "dig takes symbol keys for a payload with string keys" do
+      assert_equal "user_456", @payload.dig(:data, :object, :client_reference_id)
+      assert_equal "premium", @payload.dig(:data, "object", :metadata, :plan)
+      assert_equal "premium", @payload.dig(:data, :object).metadata.plan
+    end
+
+    test "dig goes through arrays and stops at a missing key" do
+      payload = { "items" => [ { "price" => { "id" => "price_1" } } ] }.to_dot
+
+      assert_equal "price_1", payload.dig(:items, 0, :price, :id)
+      assert_equal "price_1", payload.dig(:items, 0, :price).id
+      assert_nil payload.dig(:missing, :id)
+      assert_nil payload.dig(:items, 1, :price)
+    end
+
     test "supports nested dot notation access" do
       assert_equal "user_456", @payload.data.object.client_reference_id
       assert_equal "premium", @payload.data.object.metadata.plan
