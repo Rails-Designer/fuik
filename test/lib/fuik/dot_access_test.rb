@@ -52,6 +52,21 @@ module Fuik
       assert_equal "John", payload_with_symbols.dig(:customer, :name)
     end
 
+    test "returns false values instead of nil" do
+      payload = { "livemode" => false, "data" => { "object" => { "paid" => false } } }.to_dot
+
+      assert_equal false, payload.livemode
+      assert_equal false, payload["livemode"]
+      assert_equal false, payload[:livemode]
+      assert_equal false, payload.data.object.paid
+      assert_equal false, { paid: false }.to_dot["paid"]
+    end
+
+    test "returns nil for a missing key" do
+      assert_nil @payload.nonexistent
+      assert_nil @payload["nonexistent"]
+    end
+
     test "supports key? method" do
       assert @payload.key?("id")
       assert @payload.key?("type")
