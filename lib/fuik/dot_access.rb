@@ -46,8 +46,6 @@ module Fuik
 
       private
 
-      # Looks the key up as given, as a string, then as a symbol. Checks key?
-      # rather than chaining with ||, so a `false` value isn't skipped.
       def fetch_value(key)
         found = [key, key.to_s, key.to_s.to_sym].find { @payload.key?(it) }
 
