@@ -12,7 +12,7 @@ module Fuik
       end
 
       def [](key)
-        value = @payload[key] || @payload[key.to_s] || @payload[key.to_sym]
+        value = fetch_value(key)
 
         value.is_a?(Hash) ? self.class.new(value) : value
       end
@@ -34,7 +34,7 @@ module Fuik
       def method_missing(method_name, *arguments)
         return super unless arguments.empty? && !block_given?
 
-        value = @payload[method_name] || @payload[method_name.to_s] || @payload[method_name.to_sym]
+        value = fetch_value(method_name)
         value.is_a?(Hash) ? self.class.new(value) : value
       end
 
@@ -43,6 +43,14 @@ module Fuik
       end
 
       def to_h = @payload
+
+      private
+
+      def fetch_value(key)
+        found = [key, key.to_s, key.to_s.to_sym].find { @payload.key?(it) }
+
+        @payload[found] unless found.nil?
+      end
     end
   end
 end
