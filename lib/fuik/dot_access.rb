@@ -22,7 +22,15 @@ module Fuik
       end
 
       def dig(*keys)
-        value = @payload.dig(*keys)
+        value = keys.reduce(self) do |current, key|
+          case current
+          when nil then return nil
+          when AccessPayload then current[key]
+          when Hash then self.class.new(current)[key]
+          when Array then current[key]
+          else raise TypeError, "#{current.class} does not have #dig method"
+          end
+        end
 
         value.is_a?(Hash) ? self.class.new(value) : value
       end
