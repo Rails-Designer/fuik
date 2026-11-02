@@ -21,8 +21,6 @@ module Fuik
         @payload[key] = value
       end
 
-      # Like Hash#dig, but each hash level is read through #[], so string and
-      # symbol keys work the same way as they do for dot and hash access.
       def dig(*keys)
         value = keys.reduce(self) do |current, key|
           case current
